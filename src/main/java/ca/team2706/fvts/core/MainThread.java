@@ -169,12 +169,12 @@ public class MainThread extends Thread {
 
 				// Read the frame
 				frame = VisionCameraServer.getFrame(visionParams.getByName("core/type").getValue(),
-						visionParams.getByName("core/identifier").getValue());
+						visionParams.getByName("core/identifier").getValue()).clone();
 				if (useCamera) {
 					for (AbstractImagePreprocessor processor : processors) {
 						Mat newFrame = null;
 						try {
-						newFrame = processor.process(frame, this);
+							newFrame = processor.process(frame, this);
 						}catch(Exception e) {
 							System.out.println(frame.toString());
 							e.printStackTrace();
