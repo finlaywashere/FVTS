@@ -172,7 +172,13 @@ public class MainThread extends Thread {
 						visionParams.getByName("core/identifier").getValue());
 				if (useCamera) {
 					for (AbstractImagePreprocessor processor : processors) {
-						Mat newFrame = processor.process(frame, this);
+						Mat newFrame = null;
+						try {
+						newFrame = processor.process(frame, this);
+						}catch(Exception e) {
+							System.out.println(frame.toString());
+							e.printStackTrace();
+						}
 						frame.release();
 						frame = newFrame;
 					}
