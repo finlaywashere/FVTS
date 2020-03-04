@@ -71,7 +71,7 @@ public class Main {
 	 * The main method! Very important Do not delete! :] :]
 	 *
 	 * 
-	 * @param The command line arguments
+	 * @param args The command line arguments
 	 * @throws Exception
 	 */
 
