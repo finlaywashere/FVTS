@@ -23,7 +23,7 @@ public class NetworkTablesInterface extends AbstractInterface {
 	 * Turns all the vision data into packets that kno da wae to get to the robo rio
 	 * :]
 	 *
-	 * @param data
+	 * @param data The vision data to publish
 	 */
 	@Override
 	public void publishData(VisionData data, MainThread thread) {

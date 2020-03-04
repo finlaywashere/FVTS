@@ -15,9 +15,9 @@ public class NormalisedPoint {
 	private int y;
 	
 	/**
-	 * Creates a Normalised Point
-	 * @param x
-	 * @param y
+	 * Creates a normalised Point
+	 * @param x The X value of the point
+	 * @param y The Y value of the point
 	 */
 	public NormalisedPoint(int x, int y) {
 		//Sets the x to the x
@@ -26,14 +26,15 @@ public class NormalisedPoint {
 		this.y = y;
 	}
 	/**
-	 *Gets the X 
+	 * Gets the X 
+	 * @return The X value of this point
 	 */
 	public int getX() {
 		return x;
 	}
 	/**
 	 * Gets the Y
-	 * @return
+	 * @return The Y value of this point
 	 */
 	public int getY() {
 		return y;
