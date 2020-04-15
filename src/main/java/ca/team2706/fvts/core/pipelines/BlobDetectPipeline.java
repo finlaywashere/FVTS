@@ -12,7 +12,8 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import ca.team2706.fvts.core.MainThread;
-import ca.team2706.fvts.core.VisionData;
+import ca.team2706.fvts.core.data.Target;
+import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.params.AttributeOptions;
 import ca.team2706.fvts.core.params.VisionParams;
 
@@ -88,14 +89,14 @@ public class BlobDetectPipeline extends AbstractPipeline {
 
 			if (areaNorm >= visionParams.getByName(getName()+"/"+"minArea").getValueD()) {
 
-				VisionData.Target target = new VisionData.Target();
-				target.boundingBox = boundingRect;
-				target.contour = contour;
-				target.xCentre = target.boundingBox.x + (target.boundingBox.width / 2);
-				target.xCentreNorm = ((double) target.xCentre - (src.width() / 2)) / (src.width() / 2);
-				target.yCentre = target.boundingBox.y + (target.boundingBox.height / 2);
-				target.yCentreNorm = ((double) target.yCentre - (src.height() / 2)) / (src.height() / 2);
-				target.areaNorm = areaNorm;
+				Target target = new Target();
+				target.data.put("boundingBox", boundingRect);
+				target.data.put("contour", contour);
+				target.data.put("xCentre", boundingRect.x + (boundingRect.width / 2));
+				target.data.put("xCentreNorm", (((Double)target.data.get("xCentre")) - (src.width() / 2)) / (src.width() / 2));
+				target.data.put("yCentre", boundingRect.y + (boundingRect.height / 2));
+				target.data.put("yCentreNorm", (((Double)target.data.get("yCentre")) - (src.height() / 2)) / (src.height() / 2));
+				target.data.put("areaNorm", areaNorm);
 				visionData.targetsFound.add(target);
 			}
 			// else
@@ -119,24 +120,26 @@ public class BlobDetectPipeline extends AbstractPipeline {
 		// DRAW STUFF ONTO THE OUTPUT IMAGE
 		// for each target found, draw the bounding box and centre
 
-		for (VisionData.Target target : visionData.targetsFound) {
-			Point centerTarget = new Point(target.xCentre, target.yCentre);
+		for (Target target : visionData.targetsFound) {
+			Point centerTarget = new Point((Integer) target.data.get("xCentre"), (Integer) target.data.get("yCentre"));
+			Rect boundingRect = (Rect) target.data.get("boundingBox");
 			Imgproc.circle(src, centerTarget, 6, BACKGROUND_TARGET_COLOUR, -1);
-			Imgproc.rectangle(src, new Point(target.boundingBox.x, target.boundingBox.y),
-					new Point(target.boundingBox.x + target.boundingBox.width,
-							target.boundingBox.y + target.boundingBox.height),
+			Imgproc.rectangle(src, new Point(boundingRect.x, boundingRect.y),
+					new Point(boundingRect.x + boundingRect.width,
+							boundingRect.y + boundingRect.height),
 					BACKGROUND_TARGET_COLOUR, 3);
 		}
 
 		// Draw the preferred target over it
 		if (visionData.preferredTarget != null) {
 
-			Point centerTarget = new Point(visionData.preferredTarget.xCentre, visionData.preferredTarget.yCentre);
+			Point centerTarget = new Point((Integer) visionData.preferredTarget.data.get("xCentre"), (Integer) visionData.preferredTarget.data.get("yCentre"));
 			Imgproc.circle(src, centerTarget, 10, PREFERRED_TARGET_COLOUR, -1);
+			Rect boundingRect = (Rect) visionData.preferredTarget.data.get("boundingBox");
 			Imgproc.rectangle(src,
-					new Point(visionData.preferredTarget.boundingBox.x, visionData.preferredTarget.boundingBox.y),
-					new Point(visionData.preferredTarget.boundingBox.x + visionData.preferredTarget.boundingBox.width,
-							visionData.preferredTarget.boundingBox.y + visionData.preferredTarget.boundingBox.height),
+					new Point(boundingRect.x, boundingRect.y),
+					new Point(boundingRect.x + boundingRect.width,
+							boundingRect.y + boundingRect.height),
 					PREFERRED_TARGET_COLOUR, 7);
 		}
 	}

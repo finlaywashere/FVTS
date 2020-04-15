@@ -5,7 +5,7 @@ import java.util.List;
 
 import ca.team2706.fvts.core.Log;
 import ca.team2706.fvts.core.MainThread;
-import ca.team2706.fvts.core.VisionData;
+import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.params.AttributeOptions;
 
 public abstract class AbstractMathProcessor {

@@ -6,7 +6,7 @@ import java.util.List;
 import org.opencv.core.Mat;
 
 import ca.team2706.fvts.core.MainThread;
-import ca.team2706.fvts.core.VisionData;
+import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.params.AttributeOptions;
 import ca.team2706.fvts.core.params.VisionParams;
 

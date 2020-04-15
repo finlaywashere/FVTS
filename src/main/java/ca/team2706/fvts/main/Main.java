@@ -35,6 +35,7 @@ public class Main {
 	public static NetworkTable loggingTable;
 	public static File visionParamsFile;
 	public static boolean developmentMode = false;
+	public static boolean pubAll = false;
 	public static int runID;
 	public static String serverIp = "";
 
@@ -111,6 +112,10 @@ public class Main {
 		visionParamsList = Utils.loadVisionParams();
 
 		Map<String, String> masterConfig = ConfigParser.getPropertiesM(MASTER_CONFIG_FILE, "config");
+		
+		if(masterConfig.containsKey("pubAll")) {
+			pubAll = Boolean.valueOf(masterConfig.get("pubAll"));
+		}
 
 		Map<String, String> masterEnabled = ConfigParser.getPropertiesM(MASTER_CONFIG_FILE, "enabled");
 

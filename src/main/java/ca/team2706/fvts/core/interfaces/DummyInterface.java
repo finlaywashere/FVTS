@@ -8,7 +8,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import ca.team2706.fvts.core.MainThread;
-import ca.team2706.fvts.core.VisionData;
+import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.params.AttributeOptions;
 
 public class DummyInterface extends AbstractInterface {
