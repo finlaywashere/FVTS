@@ -3,9 +3,11 @@ package ca.team2706.fvts.core.math;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opencv.core.Rect;
+
 import ca.team2706.fvts.core.MainThread;
-import ca.team2706.fvts.core.VisionData;
-import ca.team2706.fvts.core.VisionData.Target;
+import ca.team2706.fvts.core.data.Target;
+import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.params.AttributeOptions;
 import ca.team2706.fvts.core.params.VisionParams;
 
@@ -36,13 +38,13 @@ public class DistanceProcessor extends AbstractMathProcessor{
 		double scaleFactor = 480d/visionData.binMask.rows();
 		
 		for (Target t : visionData.targetsFound) {
-			double y = t.boundingBox.height * scaleFactor;
+			double y = ((Rect)t.data.get("boundingBox")).height * scaleFactor;
 
 			double x = (y - visionParams.getByName(getName()+"/"+"distYIntercept").getValueD())
 					/ visionParams.getByName(getName()+"/"+"distSlope").getValueD();
 
 			// Now we have the distance!!!
-			t.distance = x;
+			t.data.put("distance", x);
 
 		}
 	}

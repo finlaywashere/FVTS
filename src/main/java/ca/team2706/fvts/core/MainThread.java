@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.opencv.core.Mat;
 
+import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.image.AbstractImagePreprocessor;
 import ca.team2706.fvts.core.input.AbstractInputDevice;
 import ca.team2706.fvts.core.interfaces.AbstractInterface;
@@ -209,7 +210,7 @@ public class MainThread extends Thread {
 				}
 
 				if (visionData.preferredTarget != null)
-					lastDist = visionData.preferredTarget.distance;
+					lastDist = (Double) visionData.preferredTarget.data.get("distance");
 
 				outputInterface.publishData(visionData, this);
 
@@ -220,7 +221,7 @@ public class MainThread extends Thread {
 						// the window failed
 						BufferedImage raw = Utils.matToBufferedImage(rawOutputImg);
 						if (visionData.preferredTarget != null) {
-							double dist = visionData.preferredTarget.distance;
+							double dist = (Double) visionData.preferredTarget.data.get("distance");
 							Graphics g = raw.createGraphics();
 							g.setColor(Color.GREEN);
 							g.drawString("dist: " + dist, 50, 50);
@@ -291,10 +292,10 @@ public class MainThread extends Thread {
 					data.add("" + visionData.fps);
 					data.add("" + visionData.targetsFound.size());
 					if (visionData.preferredTarget != null) {
-						data.add(visionData.preferredTarget.xCentreNorm + "");
-						data.add(visionData.preferredTarget.yCentreNorm + "");
-						data.add(visionData.preferredTarget.areaNorm + "");
-						data.add(visionData.preferredTarget.distance + "");
+						data.add((Double)visionData.preferredTarget.data.get("xCentreNorm") + "");
+						data.add((Double)visionData.preferredTarget.data.get("yCentreNorm") + "");
+						data.add((Double)visionData.preferredTarget.data.get("areaNorm") + "");
+						data.add((Double)visionData.preferredTarget.data.get("distance") + "");
 					}
 					try {
 						Log.logData(csvFile, data);
