@@ -93,9 +93,9 @@ public class BlobDetectPipeline extends AbstractPipeline {
 				target.data.put("boundingBox", boundingRect);
 				target.data.put("contour", contour);
 				target.data.put("xCentre", boundingRect.x + (boundingRect.width / 2));
-				target.data.put("xCentreNorm", (((Double)target.data.get("xCentre")) - (src.width() / 2)) / (src.width() / 2));
+				target.data.put("xCentreNorm", new Double((((Integer)target.data.get("xCentre")) - (src.width() / 2)) / (src.width() / 2)));
 				target.data.put("yCentre", boundingRect.y + (boundingRect.height / 2));
-				target.data.put("yCentreNorm", (((Double)target.data.get("yCentre")) - (src.height() / 2)) / (src.height() / 2));
+				target.data.put("yCentreNorm", new Double((((Integer)target.data.get("yCentre")) - (src.height() / 2)) / (src.height() / 2)));
 				target.data.put("areaNorm", areaNorm);
 				visionData.targetsFound.add(target);
 			}

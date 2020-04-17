@@ -25,10 +25,11 @@ import ca.team2706.fvts.core.params.AttributeOptions;
 import ca.team2706.fvts.core.params.VisionParams;
 import ca.team2706.fvts.core.pipelines.AbstractPipeline;
 import ca.team2706.fvts.main.Main;
+import ca.team2706.fvts.modules.ModuleLoader;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class Utils {
-
+	private static final ModuleLoader modLoader = new ModuleLoader();
 	/**
 	 * 
 	 * @param outputPath The folder to dump images to
@@ -169,6 +170,7 @@ public class Utils {
 					String interfaceName = null;
 					String mathNames = null;
 					String imagePreprocessorNames = null;
+					String modules = null;
 					if (data.get("core") == null) {
 						Log.e("Config " + s + " is missing the core section!", true);
 						System.exit(1);
@@ -184,6 +186,8 @@ public class Utils {
 									mathNames = data.get("core").get(s2);
 								} else if (s2.equals("preprocessors")) {
 									imagePreprocessorNames = data.get("core").get(s2);
+								} else if(s2.equals("modules")) {
+									modules = data.get("core").get(s2);
 								}
 							}
 							attribs.add(new Attribute(s1 + "/" + s2, data.get(s1).get(s2)));
@@ -193,6 +197,11 @@ public class Utils {
 						Log.e("Missing pipeline or interface in config " + s, true);
 						System.exit(1);
 					}
+					
+					if(modules != null) {
+						modLoader.load(modules.split(","));
+					}
+					
 					List<AttributeOptions> options = getOptions(pipelineName, interfaceName, mathNames,
 							imagePreprocessorNames);
 					VisionParams params = new VisionParams(attribs, options);
