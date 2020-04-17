@@ -8,10 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Grant execute permission for gradlew and build scripts
+      run: chmod +x gradlew && chmod +x buildScripts/linux.sh
     - name: Build with Gradle
-      run: ./buildScripts/raspbian-linuxtest.sh
+      run: ./buildScripts/linux.sh
