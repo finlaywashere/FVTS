@@ -17,13 +17,13 @@ import ca.team2706.fvts.core.interfaces.AbstractInterface;
 import ca.team2706.fvts.core.math.AbstractMathProcessor;
 import ca.team2706.fvts.core.params.VisionParams;
 import ca.team2706.fvts.core.pipelines.AbstractPipeline;
-import ca.team2706.fvts.core.pipelines.BlobDetectPipeline;
 import ca.team2706.fvts.main.Main;
 
 public class MainThread extends Thread {
 
 	public VisionParams visionParams;
 	public ParamsSelector selector;
+	
 
 	public MainThread(VisionParams params) {
 		this.visionParams = params;
@@ -292,10 +292,10 @@ public class MainThread extends Thread {
 					data.add("" + visionData.fps);
 					data.add("" + visionData.targetsFound.size());
 					if (visionData.preferredTarget != null) {
-						data.add((Double)visionData.preferredTarget.data.get("xCentreNorm") + "");
-						data.add((Double)visionData.preferredTarget.data.get("yCentreNorm") + "");
-						data.add((Double)visionData.preferredTarget.data.get("areaNorm") + "");
-						data.add((Double)visionData.preferredTarget.data.get("distance") + "");
+						data.add((Double) visionData.preferredTarget.data.get("xCentreNorm") + "");
+						data.add((Double) visionData.preferredTarget.data.get("yCentreNorm") + "");
+						data.add((Double) visionData.preferredTarget.data.get("areaNorm") + "");
+						data.add((Double) visionData.preferredTarget.data.get("distance") + "");
 					}
 					try {
 						Log.logData(csvFile, data);
@@ -307,7 +307,7 @@ public class MainThread extends Thread {
 
 				// Display the frame rate onto the console
 				double pipelineTime = (((double) (pipelineEnd - pipelineStart))
-						/ BlobDetectPipeline.NANOSECONDS_PER_SECOND) * 1000;
+						/ Constants.NANOSECONDS_PER_SECOND) * 1000;
 				Log.i("Vision FPS: " + visionData.fps + ", pipeline took: " + pipelineTime + " ms\n", false);
 
 				lastTime = System.currentTimeMillis();
