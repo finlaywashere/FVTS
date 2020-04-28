@@ -4,6 +4,7 @@ plugins {
   id 'com.github.johnrengelman.shadow' version '5.1.0'
   id 'java'
   id 'application'
+  id 'maven-publish'
 }
 
 // Change the line below if you change the name of your main Java class
@@ -172,7 +173,7 @@ publishing {
     maven {
       name = "GitHubPackages"
       url = "https://maven.pkg.github.com/octocat/hello-world"
-      credentials = {
+      credentials {
         username = System.getenv("GITHUB_ACTOR")
         password = System.getenv("GITHUB_TOKEN")
       }
