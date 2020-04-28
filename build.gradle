@@ -171,6 +171,9 @@ tasks.withType(Test) {
 publishing {
   publications {
     mavenJava(MavenPublication) {
+      groupId = 'ca.team2706'
+      artifactId = 'fvts'
+      version = System.getenv("GITHUB_VERSION")
       versionMapping {
         usage('java-api') {
           fromResolutionOf('runtimeClasspath')
