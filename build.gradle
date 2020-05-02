@@ -13,7 +13,7 @@ mainClassName = 'ca.team2706.fvts.main.Main'
 
 // Change the line below to change the name of the output jar
 def projectName = 'FVTS'
-def version = '2.0'
+def REPO_VERSION = '1.2'
 
 task setbuildType{
   doFirst{
@@ -173,7 +173,7 @@ publishing {
     mavenJava(MavenPublication) {
       groupId = 'ca.team2706'
       artifactId = 'fvts'
-      version = System.getenv("GITHUB_VERSION")
+      version = REPO_VERSION
       versionMapping {
         usage('java-api') {
           fromResolutionOf('runtimeClasspath')
