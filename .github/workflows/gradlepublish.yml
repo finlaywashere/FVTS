@@ -29,6 +29,6 @@ jobs:
     - name: Publish to GitHub Packages
       run: ./buildScripts/publish.sh
       env:
-        USERNAME: ${{ github.actor }}
-        TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        VERSION: ${{ github.ref }}
+        GITHUB_USERNAME: ${{ github.actor }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_VERSION: ${{ github.ref }}
