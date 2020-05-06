@@ -51,6 +51,6 @@ public class ConfigParserTest {
 			e.printStackTrace();
 			fail();
 		}
-		assertEquals(props.get("test2").get("test3"),"hello");
+		assertEquals("hello", props.get("test2").get("test3"));
 	}
 }

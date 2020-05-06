@@ -23,7 +23,8 @@ public class MainThread extends Thread {
 
 	public VisionParams visionParams;
 	public ParamsSelector selector;
-	
+	public boolean error = false;
+	public boolean stop = false;
 
 	public MainThread(VisionParams params) {
 		this.visionParams = params;
@@ -96,15 +97,6 @@ public class MainThread extends Thread {
 
 	@Override
 	public void run() {
-		// Setup the camera server for this camera
-		try {
-			VisionCameraServer.initCamera(this.visionParams.getByName("core/type").getValue(),
-					this.visionParams.getByName("core/identifier").getValue());
-		} catch (Exception e2) {
-			Log.e(e2.getMessage(), true);
-			e2.printStackTrace();
-		}
-
 		// Initializes a Matrix to hold the frame
 
 		frame = new Mat();
@@ -140,6 +132,7 @@ public class MainThread extends Thread {
 			} catch (Exception e) {
 				Log.e(e.getMessage(), true);
 				e.printStackTrace();
+				error = true;
 			}
 		}
 
@@ -152,6 +145,8 @@ public class MainThread extends Thread {
 
 		// Main video processing loop
 		while (true) {
+			if(stop)
+				break;
 			try {
 
 				if (!visionParams.getByName("enabled").getValueB() && use_GUI) {
@@ -177,8 +172,8 @@ public class MainThread extends Thread {
 						try {
 							newFrame = processor.process(frame, this);
 						}catch(Exception e) {
-							System.out.println(frame.toString());
 							e.printStackTrace();
+							error = true;
 						}
 						frame.release();
 						frame = newFrame;
@@ -233,14 +228,17 @@ public class MainThread extends Thread {
 						// means mat2BufferedImage broke
 						// non-fatal error, let the program continue
 						Log.e(e.getMessage(), true);
+						error = true;
 						continue;
 					} catch (NullPointerException e) {
 						Log.e(e.getMessage(), true);
 						Log.i("Window closed", true);
+						error = true;
 						Runtime.getRuntime().halt(0);
 					} catch (Exception e) {
 						// just in case
 						Log.e(e.getMessage(), true);
+						error = true;
 						continue;
 					}
 				}
@@ -265,6 +263,7 @@ public class MainThread extends Thread {
 							timestamp++;
 						} catch (IOException e) {
 							Log.e(e.getMessage(), true);
+							error = true;
 							return;
 						}
 					}
@@ -284,6 +283,7 @@ public class MainThread extends Thread {
 						} catch (Exception e) {
 							Log.e("Error while logging vision data to csv file!", true);
 							Log.e(e.getMessage(), true);
+							error = true;
 						}
 						data.clear();
 						first = false;
@@ -302,6 +302,7 @@ public class MainThread extends Thread {
 					} catch (Exception e) {
 						Log.e("Error while logging vision data to csv file!", true);
 						Log.e(e.getMessage(), true);
+						error = true;
 					}
 				}
 
@@ -314,11 +315,13 @@ public class MainThread extends Thread {
 			} catch (Exception e) {
 				Log.e(e.getMessage(), true);
 				e.printStackTrace();
+				error = true;
 				try {
 					Thread.sleep(10);
 				} catch (InterruptedException e1) {
 					Log.e(e1.getMessage(), true);
 					e.printStackTrace();
+					error = true;
 				}
 			}
 		}

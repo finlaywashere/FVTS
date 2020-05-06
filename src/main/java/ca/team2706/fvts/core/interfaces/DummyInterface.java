@@ -13,7 +13,7 @@ import ca.team2706.fvts.core.params.AttributeOptions;
 
 public class DummyInterface extends AbstractInterface {
 
-	public Map<String,VisionData> lastFrame;
+	public Map<String,VisionData> lastFrame = new HashMap<String,VisionData>();
 	public Map<String,Lock> locks = null;
 	
 	public DummyInterface() {
