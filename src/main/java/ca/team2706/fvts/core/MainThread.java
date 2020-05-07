@@ -128,7 +128,7 @@ public class MainThread extends Thread {
 			guiProcessedImg = new DisplayGui(1, 1, "Processed-" + visionParams.getByName("name").getValue(), true);
 			// Initializes the parameters selector window
 			try {
-				selector = new ParamsSelector(visionParams);
+				selector = new ParamsSelector(visionParams,this);
 			} catch (Exception e) {
 				Log.e(e.getMessage(), true);
 				e.printStackTrace();
@@ -325,7 +325,8 @@ public class MainThread extends Thread {
 				}
 			}
 		}
-
+		guiProcessedImg.close();
+		guiRawImg.close();
 	}
 
 	public void updateParams(VisionParams params) {
