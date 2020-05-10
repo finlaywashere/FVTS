@@ -13,6 +13,7 @@ public class VisionParams {
 		if(!this.options.isValid()) {
 			throw new Exception("Config is not valid!");
 		}
+		this.options.copyMeta();
 	}
 	public Attribute getByName(String s) {
 		return options.getByName(s);

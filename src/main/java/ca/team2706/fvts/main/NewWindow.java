@@ -41,7 +41,7 @@ public class NewWindow extends JFrame implements ActionListener {
 		if (e.getSource() == btnNewButton) {
 
 			try {
-				new ParamsSelector(null);
+				new ParamsSelector();
 			} catch (Exception e1) {
 				Log.e(e1.getMessage(), true);
 			}

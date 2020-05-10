@@ -34,7 +34,6 @@ public class Log {
 		System.out.println("Verbose: "+message);
 	}
 	public static void e(String message,boolean logToCLI){
-		if(silence) return;
 		if(logToCLI){
 			CLI.log("Error: "+message);
 		}
