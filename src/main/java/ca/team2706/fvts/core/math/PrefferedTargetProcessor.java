@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.team2706.fvts.core.MainThread;
-import ca.team2706.fvts.core.VisionData;
+import ca.team2706.fvts.core.data.Target;
+import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.params.AttributeOptions;
 import ca.team2706.fvts.core.params.VisionParams;
 
@@ -25,18 +26,18 @@ public class PrefferedTargetProcessor extends AbstractMathProcessor {
 		// score that is a
 		// percentage of the area of the largest.
 		double largestAreaNorm = Double.NEGATIVE_INFINITY;
-		for (VisionData.Target target : visionData.targetsFound) {
-			if (target.areaNorm > largestAreaNorm)
-				largestAreaNorm = target.areaNorm;
+		for (Target target : visionData.targetsFound) {
+			if ((Double) target.data.get("areaNorm") > largestAreaNorm)
+				largestAreaNorm = (Double) target.data.get("areaNorm");
 		}
 
 		double bestScore = Double.NEGATIVE_INFINITY;
-		for (VisionData.Target target : visionData.targetsFound) {
+		for (Target target : visionData.targetsFound) {
 
 			// Give each target a score, and select the one with the highest score.
 
-			double areaScore = target.areaNorm / largestAreaNorm;
-			double distFromCentrePenalty = Math.abs(target.xCentreNorm);
+			double areaScore = (Double) target.data.get("areaNorm") / largestAreaNorm;
+			double distFromCentrePenalty = Math.abs((Double) target.data.get("xCentreNorm"));
 
 			double score = (1 - visionParams.getByName(getName()+"/"+"distToCentreImportance").getValueD()) * areaScore
 					- visionParams.getByName(getName()+"/"+"distToCentreImportance").getValueD() * distFromCentrePenalty;

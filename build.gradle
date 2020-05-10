@@ -4,6 +4,7 @@ plugins {
   id 'com.github.johnrengelman.shadow' version '5.1.0'
   id 'java'
   id 'application'
+  id 'maven-publish'
 }
 
 // Change the line below if you change the name of your main Java class
@@ -12,7 +13,7 @@ mainClassName = 'ca.team2706.fvts.main.Main'
 
 // Change the line below to change the name of the output jar
 def projectName = 'FVTS'
-def version = '2.0'
+def REPO_VERSION = '1.2'
 
 task setbuildType{
   doFirst{
@@ -165,6 +166,34 @@ tasks.withType(Test) {
     systemProperty "java.library.path", "${buildDir}/tests/opencv"
     scanForTestClasses = false
     include "**/*Test.class"
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      groupId = 'ca.team2706'
+      artifactId = 'fvts'
+      version = REPO_VERSION
+      versionMapping {
+        usage('java-api') {
+          fromResolutionOf('runtimeClasspath')
+        }
+        usage('java-runtime') {
+          fromResolutionResult()
+        }
+      }
+    }
+  }
+  repositories {
+    maven {
+      name = "GitHubPackages"
+      url = "https://maven.pkg.github.com/finlaywashere/FVTS"
+      credentials {
+        username = System.getenv("GITHUB_ACTOR")
+        password = System.getenv("GITHUB_TOKEN")
+      }
+    }
+  }
 }
 
 build.dependsOn setbuildType

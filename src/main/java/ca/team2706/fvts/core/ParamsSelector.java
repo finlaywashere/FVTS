@@ -45,9 +45,9 @@ public class ParamsSelector extends JFrame implements ActionListener {
 	/**
 	 * Creates a new Parameters Selector
 	 * 
-	 * @throws Exception
+	 * @param params The vision parameters tp initialize the parameter selection window with
 	 */
-	public ParamsSelector(VisionParams params) throws Exception {
+	public ParamsSelector(VisionParams params) {
 		this.visionParams = params;
 
 		init();

@@ -20,8 +20,8 @@ import ca.team2706.fvts.core.MainThread;
 import ca.team2706.fvts.core.NetworkTablesManager;
 import ca.team2706.fvts.core.Utils;
 import ca.team2706.fvts.core.VisionCameraServer;
-import ca.team2706.fvts.core.VisionData;
-import ca.team2706.fvts.core.VisionData.Target;
+import ca.team2706.fvts.core.data.Target;
+import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.interfaces.AbstractInterface;
 import ca.team2706.fvts.core.interfaces.DummyInterface;
 import ca.team2706.fvts.core.params.Attribute;
@@ -133,18 +133,18 @@ public class DataViewer {
 					System.out.println("Preffered target found: " + (data.preferredTarget != null));
 					if (data.preferredTarget != null) {
 						System.out.println("Preffered target: ");
-						System.out.println("Distance: " + data.preferredTarget.distance);
-						System.out.println("X-Centre: " + data.preferredTarget.xCentreNorm);
-						System.out.println("Y-Centre: " + data.preferredTarget.yCentreNorm);
-						System.out.println("Area: " + data.preferredTarget.areaNorm);
+						System.out.println("Distance: " + data.preferredTarget.data.get("distance"));
+						System.out.println("X-Centre: " + data.preferredTarget.data.get("xCentreNorm"));
+						System.out.println("Y-Centre: " + data.preferredTarget.data.get("yCentreNorm"));
+						System.out.println("Area: " + data.preferredTarget.data.get("areaNorm"));
 					}
 					for (int i = 0; i < data.targetsFound.size(); i++) {
 						Target t = data.targetsFound.get(i);
 						System.out.println("Target #" + (i + 1) + ": ");
-						System.out.println("Distance: " + t.distance);
-						System.out.println("X-Centre: " + t.xCentreNorm);
-						System.out.println("Y-Centre: " + t.yCentreNorm);
-						System.out.println("Area: " + t.areaNorm);
+						System.out.println("Distance: " + t.data.get("distance"));
+						System.out.println("X-Centre: " + t.data.get("xCentreNorm"));
+						System.out.println("Y-Centre: " + t.data.get("yCentreNorm"));
+						System.out.println("Area: " + t.data.get("areaNorm"));
 					}
 					data = null;
 				}
@@ -164,18 +164,18 @@ public class DataViewer {
 					System.out.println("Preffered target found: " + (data.preferredTarget != null));
 					if (data.preferredTarget != null) {
 						System.out.println("Preffered target: ");
-						System.out.println("Distance: " + data.preferredTarget.distance);
-						System.out.println("X-Centre: " + data.preferredTarget.xCentreNorm);
-						System.out.println("Y-Centre: " + data.preferredTarget.yCentreNorm);
-						System.out.println("Area: " + data.preferredTarget.areaNorm);
+						System.out.println("Distance: " + data.preferredTarget.data.get("distance"));
+						System.out.println("X-Centre: " + data.preferredTarget.data.get("xCentreNorm"));
+						System.out.println("Y-Centre: " + data.preferredTarget.data.get("yCentreNorm"));
+						System.out.println("Area: " + data.preferredTarget.data.get("areaNorm"));
 					}
 					for (int i = 0; i < data.targetsFound.size(); i++) {
 						Target t = data.targetsFound.get(i);
 						System.out.println("Target #" + (i + 1) + ": ");
-						System.out.println("Distance: " + t.distance);
-						System.out.println("X-Centre: " + t.xCentreNorm);
-						System.out.println("Y-Centre: " + t.yCentreNorm);
-						System.out.println("Area: " + t.areaNorm);
+						System.out.println("Distance: " + t.data.get("distance"));
+						System.out.println("X-Centre: " + t.data.get("xCentreNorm"));
+						System.out.println("Y-Centre: " + t.data.get("yCentreNorm"));
+						System.out.println("Area: " + t.data.get("areaNorm"));
 					}
 					data = null;
 				}

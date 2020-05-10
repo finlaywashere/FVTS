@@ -33,7 +33,9 @@ public class DisplayGui extends JFrame implements Runnable {
 	/**
 	 * Instantiates a new display gui.
 	 *
-	 * @param image the image
+	 * @param image The image to extract the window's width and height from
+	 * @param windowTitle The window title
+	 * @param show Whether or not to make the window visible
 	 */
 	public DisplayGui(BufferedImage image, String windowTitle, boolean show) {
 		// Sets the image to the image
@@ -71,8 +73,10 @@ public class DisplayGui extends JFrame implements Runnable {
 	/**
 	 * Instantiates a new display gui.
 	 *
-	 * @param width  the width
-	 * @param height the height
+	 * @param width  The width
+	 * @param height The height
+	 * @param windowTitle The title of the window
+	 * @param show Whether or not to make the window visible
 	 */
 	public DisplayGui(int width, int height, String windowTitle, boolean show) {
 		// Sets the width to the width

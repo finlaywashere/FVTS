@@ -7,7 +7,7 @@ import org.opencv.core.Mat;
 
 import ca.team2706.fvts.core.Log;
 import ca.team2706.fvts.core.MainThread;
-import ca.team2706.fvts.core.VisionData;
+import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.params.AttributeOptions;
 import ca.team2706.fvts.core.params.VisionParams;
 
@@ -30,7 +30,6 @@ public abstract class AbstractPipeline {
 			pipelines = new ArrayList<AbstractPipeline>();
 			pipelines.add(new BlobDetectPipeline());
 			pipelines.add(new DummyPipeline());
-			pipelines.add(new FaceDetectPipeline());
 		}
 		for(AbstractPipeline p : pipelines) {
 			if(p.getName().equalsIgnoreCase(name))

@@ -8,7 +8,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import ca.team2706.fvts.core.MainThread;
 import ca.team2706.fvts.core.NetworkTablesManager;
 import ca.team2706.fvts.core.Utils;
-import ca.team2706.fvts.core.VisionData;
+import ca.team2706.fvts.core.data.Target;
+import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.params.AttributeOptions;
 import ca.team2706.fvts.main.Main;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -23,7 +24,7 @@ public class NetworkTablesInterface extends AbstractInterface {
 	 * Turns all the vision data into packets that kno da wae to get to the robo rio
 	 * :]
 	 *
-	 * @param data
+	 * @param data The vision data to publish
 	 */
 	@Override
 	public void publishData(VisionData data, MainThread thread) {
@@ -34,16 +35,36 @@ public class NetworkTablesInterface extends AbstractInterface {
 		// Puts the number of targets found into the vision table
 		visionTable.putNumber("numTargetsFound", data.targetsFound.size());
 
+		if (Main.pubAll) {
+			for(Target t : data.targetsFound) {
+				// Put all the data into the vision table
+				for (String key : t.data.keySet()) {
+					Object o = t.data.get(key);
+					pubObject(key, o, visionTable);
+				}
+			}
+		}
+
 		// If there is a target
 		if (data.preferredTarget != null) {
-			// Put the normalized x into the vision table
-			visionTable.putNumber("ctrX", data.preferredTarget.xCentreNorm);
-			// Puts the normalized area into the vision table
-			visionTable.putNumber("area", data.preferredTarget.areaNorm);
-
-			visionTable.putNumber("angle", data.preferredTarget.xCentreNorm * 45);
-
-			visionTable.putNumber("distance", data.preferredTarget.distance);
+			// Put all the data into the vision table
+			for (String key : data.preferredTarget.data.keySet()) {
+				Object o = data.preferredTarget.data.get(key);
+				pubObject(key, o, visionTable);
+			}
+		}
+	}
+	private void pubObject(String key, Object o, NetworkTable visionTable) {
+		if(o instanceof Integer) {
+			visionTable.putNumber(key, (Integer) o);
+		}else if(o instanceof Double) {
+			visionTable.putNumber(key, (Double) o);
+		}else if(o instanceof Float) {
+			visionTable.putNumber(key, (Float) o);
+		}else if(o instanceof String) {
+			visionTable.putString(key, (String) o);
+		}else if(o instanceof Boolean) {
+			visionTable.putBoolean(key, (Boolean) o);
 		}
 	}
 

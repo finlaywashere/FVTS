@@ -3,8 +3,7 @@ config:
   logFile=logs/log$1.log
   
 enabled:
-  tape=false
+  tape=true
   cargo=false
   hatch=false
-  outerHole=true
-  faceDetect=false
+  outerHole=false

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.team2706.fvts.core.MainThread;
-import ca.team2706.fvts.core.VisionData;
-import ca.team2706.fvts.core.VisionData.Target;
+import ca.team2706.fvts.core.data.Target;
+import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.params.AttributeOptions;
 import ca.team2706.fvts.core.params.VisionParams;
 
@@ -35,9 +35,9 @@ public class AngleOffsetProcessor extends AbstractMathProcessor {
 			double aoA = visionParams.getByName(getName()+"/"+"aoA").getValueD();
 			double aoB = visionParams.getByName(getName()+"/"+"aoB").getValueD();
 			double aoC = visionParams.getByName(getName()+"/"+"aoC").getValueD();
-			double magic = Math.abs(t.xCentreNorm) / (t.areaNorm / (visionData.binMask.rows() * visionData.binMask.cols()));
+			double magic = Math.abs((Double) t.data.get("xCentreNorm")) / ((Double) t.data.get("areaNorm") / (visionData.binMask.rows() * visionData.binMask.cols()));
 			double xo = Math.pow(magic,2) * aoA + magic * aoB + aoC;
-			t.distance += xo;
+			t.data.put("distance", xo);
 		}
 	}
 

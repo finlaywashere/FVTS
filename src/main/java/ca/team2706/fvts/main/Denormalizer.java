@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import ca.team2706.fvts.core.Utils;
 import ca.team2706.fvts.core.params.VisionParams;
-import ca.team2706.fvts.main.Main;
 
 public class Denormalizer {
 	public static void main(String[] args) {

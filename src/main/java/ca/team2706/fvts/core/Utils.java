@@ -25,16 +25,18 @@ import ca.team2706.fvts.core.params.AttributeOptions;
 import ca.team2706.fvts.core.params.VisionParams;
 import ca.team2706.fvts.core.pipelines.AbstractPipeline;
 import ca.team2706.fvts.main.Main;
+import ca.team2706.fvts.modules.ModuleLoader;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class Utils {
-
+	private static final ModuleLoader modLoader = new ModuleLoader();
 	/**
 	 * 
-	 * @param The    image to dump to a file
-	 * @param image  the image to be dumped
-	 * @param suffix the suffix to put on the file name
-	 * @throws IOException
+	 * @param outputPath The folder to dump images to
+	 * @param timestamp The timestamp to append to the dumped image filename
+	 * @param image The image to be dumped
+	 * @param suffix The suffix to put on the file name
+	 * @throws IOException If the image failed to write
 	 */
 
 	public static void imgDump(BufferedImage image, String suffix, int timestamp, String outputPath)
@@ -54,7 +56,7 @@ public class Utils {
 	/**
 	 * Converts a Buffered Image to a OpenCV Matrix
 	 * 
-	 * @param Buffered Image to convert to matrix
+	 * @param bi Buffered Image to convert to matrix
 	 * @return The matrix from the buffered image
 	 */
 
@@ -69,9 +71,8 @@ public class Utils {
 	 * Converts a OpenCV Matrix to a BufferedImage :)
 	 * 
 	 * @param matrix Matrix to be converted
-	 * @return Generated from the matrix
-	 * @throws IOException
-	 * @throws Exception
+	 * @return The image generated from the matrix
+	 * @throws IOException This should never happen but ImageIO requires it to be thrown
 	 */
 	public static BufferedImage matToBufferedImage(Mat matrix) throws IOException {
 		MatOfByte mob = new MatOfByte();
@@ -152,6 +153,7 @@ public class Utils {
 
 	/**
 	 * Loads the visionTable params! :]
+	 * @return the list of vision parameters
 	 **/
 
 	public static List<VisionParams> loadVisionParams() {
@@ -168,6 +170,7 @@ public class Utils {
 					String interfaceName = null;
 					String mathNames = null;
 					String imagePreprocessorNames = null;
+					String modules = null;
 					if (data.get("core") == null) {
 						Log.e("Config " + s + " is missing the core section!", true);
 						System.exit(1);
@@ -183,6 +186,8 @@ public class Utils {
 									mathNames = data.get("core").get(s2);
 								} else if (s2.equals("preprocessors")) {
 									imagePreprocessorNames = data.get("core").get(s2);
+								} else if(s2.equals("modules")) {
+									modules = data.get("core").get(s2);
 								}
 							}
 							attribs.add(new Attribute(s1 + "/" + s2, data.get(s1).get(s2)));
@@ -192,6 +197,11 @@ public class Utils {
 						Log.e("Missing pipeline or interface in config " + s, true);
 						System.exit(1);
 					}
+					
+					if(modules != null) {
+						modLoader.load(modules.split(","));
+					}
+					
 					List<AttributeOptions> options = getOptions(pipelineName, interfaceName, mathNames,
 							imagePreprocessorNames);
 					VisionParams params = new VisionParams(attribs, options);
