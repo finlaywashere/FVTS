@@ -1,2 +1,2 @@
 #!/bin/bash
-./gradlew build -PbuildType=windows -PtestType=windows $@
+./gradlew build -PbuildType=windowsx86-64 -PtestType=windowsx86-64 $@
