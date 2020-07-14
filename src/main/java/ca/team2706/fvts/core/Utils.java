@@ -43,7 +43,6 @@ public class Utils {
 			throws IOException {
 		// prepend the file name with the tamestamp integer, left-padded with
 		// zeros so it sorts properly
-		@SuppressWarnings("deprecation")
 		String match = Main.loggingTable.getString("match","practice");
 
 		File output = new File(outputPath + match + "-" + String.format("%05d", timestamp) + "_" + suffix + ".png");
