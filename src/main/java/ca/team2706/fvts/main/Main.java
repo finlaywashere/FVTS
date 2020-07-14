@@ -25,6 +25,7 @@ import ca.team2706.fvts.core.params.VisionParams;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+@SuppressWarnings("deprecation")
 public class Main {
 
 	public static final File MASTER_CONFIG_FILE = new File("master.cf");

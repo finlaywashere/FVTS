@@ -28,6 +28,8 @@ import ca.team2706.fvts.main.Main;
 import ca.team2706.fvts.modules.ModuleLoader;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+@SuppressWarnings("deprecation")
+
 public class Utils {
 	private static final ModuleLoader modLoader = new ModuleLoader();
 	/**

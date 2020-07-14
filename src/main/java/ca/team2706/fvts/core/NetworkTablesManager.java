@@ -9,6 +9,7 @@ import ca.team2706.fvts.core.params.VisionParams;
 import ca.team2706.fvts.main.Main;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+@SuppressWarnings("deprecation")
 public class NetworkTablesManager extends Thread{
 	
 	public static Map<String,NetworkTable> tables = new HashMap<String,NetworkTable>();
