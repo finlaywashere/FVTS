@@ -20,22 +20,31 @@ public class Constants {
 		String os = System.getProperty("os.name");
 		String arch = System.getProperty("os.arch");
 		String lpath = System.getProperty("java.library.path");
+		String path = "";
 		if(os.toLowerCase().contains("windows")) {
 			if(arch.contains("64")) {
-				return new File(lpath,"windows/x86_64/"+OPENCV_LIBRARY+".dll").getPath();
+				path = "windows/x86_64/"+OPENCV_LIBRARY+".dll";
 			}else {
-				return new File(lpath,"windows/x86/"+OPENCV_LIBRARY+".dll").getPath();
+				path = "windows/x86/"+OPENCV_LIBRARY+".dll";
 			}
 		}
 		if(os.toLowerCase().contains("linux")) {
 			if(arch.toLowerCase().contains("arm")) {
-				return new File(lpath,"linux/raspbian/lib"+OPENCV_LIBRARY+".so").getPath();
+				path = "linux/raspbian/lib"+OPENCV_LIBRARY+".so";
 			}else if(arch.contains("x86")) {
-				return new File(lpath,"linux/x86/lib"+OPENCV_LIBRARY+".so").getPath();
+				path = "linux/x86/lib"+OPENCV_LIBRARY+".so";
 			}else {
-				return new File(lpath,"linux/x86-64/lib"+OPENCV_LIBRARY+".so").getPath();
+				path = "linux/x86-64/lib"+OPENCV_LIBRARY+".so";
 			}
 		}
-		return null;
+		if(path.isEmpty())
+			throw new RuntimeException("Could not find OpenCV!!!");
+		String[] paths = lpath.split(":");
+		for(String s : paths) {
+			File f = new File(s,path);
+			if(f.exists())
+				return f.getPath();
+		}
+		throw new RuntimeException("Could not find OpenCV!!!");
 	}
 }

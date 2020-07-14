@@ -60,7 +60,6 @@ public class BlobDetectPipelineTest {
 		Mat img1 = Utils.bufferedImageToMat(image);
 		Mat img2 = Utils.bufferedImageToMat(image2);
 		VisionData data1 = pipeline.process(img1, params);
-		ImageIO.write(Utils.matToBufferedImage(data1.binMask), "jpg", new File("test.jpg"));
 		assertEquals(1,data1.targetsFound.size());
 		img1.release();
 		VisionData data2 = pipeline.process(img2, params);
