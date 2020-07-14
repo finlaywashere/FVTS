@@ -1,5 +1,5 @@
 ext.ntcoreDep = { ->
-    def classifier
+    /*def classifier
     if (buildType == "windows") {
         classifier = "windows2015"
     } else if (buildType == "linux") {
@@ -10,11 +10,11 @@ ext.ntcoreDep = { ->
     	classifier = "desktop"
     } else {
         classifier = buildType
-    }
-    return "edu.wpi.first.wpilib.networktables.java:NetworkTables:+:$classifier"
+    }*/
+    return "edu.wpi.first.ntcore:ntcore-java:+"
 }
 ext.tntcoreDep = { ->
-    def classifier
+    /*def classifier
     if (testType == "windows") {
         classifier = "windows2015"
     } else if (testType == "linux") {
@@ -25,12 +25,12 @@ ext.tntcoreDep = { ->
         classifier = "desktop"
     } else {
         classifier = testType
-    }
-    return "edu.wpi.first.wpilib.networktables.java:NetworkTables:+:$classifier"
+    }*/
+    return "edu.wpi.first.ntcore:ntcore-java:+"
 }
 
 ext.cscoreDep = { ->
-	def classifier
+/*	def classifier
 	
 	if(buildType == "linux-x86_64" || buildType == "linux-x86"){
 		classifier = "linux";
@@ -38,12 +38,12 @@ ext.cscoreDep = { ->
 		classifier = "windows2015";
 	}else{
 		classifier = buildType;
-	}
-    return "edu.wpi.cscore.java:cscore:+:"+classifier;
+	}*/
+    return "edu.wpi.first.cscore:cscore-java:+";
 }
 
 ext.tcscoreDep = { ->
-	def classifier
+	/*def classifier
 	
 	if(testType == "linux-x86_64" || testType == "linux-x86"){
 		classifier = "linux";
@@ -51,51 +51,45 @@ ext.tcscoreDep = { ->
 		classifier = "windows2015";
 	}else{
 		classifier = testType;
-	}
-    return "edu.wpi.cscore.java:cscore:+:"+classifier;
+	}*/
+    return "edu.wpi.first.cscore:cscore-java:+";
 }
 ext.getOpenCvPlatformPackage = { ->
-  if (buildType == "windows") {
-    if (System.getProperty("os.arch") == "amd64") {
-      return "windows-x86_64_2015"
+  /*if (buildType.startsWith("windows")) {
+    if (System.getProperty("os.arch").equals("amd64")) {
+      return "windowsx86-64"
     } else {
-      return "windows-x86_2015"
+      return "windowsx86"
     }
-  } else if (buildType == "linux") {
-    if (System.getProperty("os.arch") == "amd64") {
-      return "linux-x86_64"
-    } else {
-      return "linux-x86"
+  } else if (buildType.startsWith("linux")) {
+    if (System.getProperty("os.arch").equals("amd64")) {
+      return "linuxx86-64"
     }
-  } else if (buildType == "armhf") {
-    return "linux-armhf"
-  } else if (buildType == "arm-raspbian") {
-    return "linux-arm-raspbian"
+  } else if (buildType.startsWith("arm-raspbian")) {
+    return "linuxraspbian"
   } else {
     return buildType
-  }
+  }*/
+  return buildType
 }
 
 ext.tgetOpenCvPlatformPackage = { ->
-  if (testType == "windows") {
-    if (System.getProperty("os.arch") == "amd64") {
-      return "windows-x86_64_2015"
+  /*if (testType.startsWith("windows")) {
+    if (System.getProperty("os.arch").equals("amd64")) {
+      return "windowsx86-64"
     } else {
-      return "windows-x86_2015"
+      return "windowsx86"
     }
-  } else if (testType == "linux") {
-    if (System.getProperty("os.arch") == "amd64") {
-      return "linux-x86_64"
-    } else {
-      return "linux-x86"
+  } else if (testType.equals("linux")) {
+    if (System.getProperty("os.arch").equals("amd64")) {
+      return "linuxx86-64"
     }
-  } else if (testType == "armhf") {
-    return "linux-armhf"
-  } else if (testType == "arm-raspbian") {
-    return "linux-arm-raspbian"
+  } else if (testType.equals("arm-raspbian")) {
+    return "linuxraspbian"
   } else {
     return testType
-  }
+  }*/
+  return testType
 }
 
 
@@ -109,7 +103,7 @@ task downloadOpenCv() {
 
     doFirst {
         def classifier = getOpenCvPlatformPackage()
-        def armOpenCvDependency = project.dependencies.create("org.opencv:opencv-jni:3.1.0:$classifier@jar")
+        def armOpenCvDependency = project.dependencies.create("edu.wpi.first.thirdparty.frc2020.opencv:opencv-jni:3.4.7-2:$classifier@jar")
         def armOpenCvConfig = project.configurations.detachedConfiguration(armOpenCvDependency)
         armOpenCvConfig.setTransitive(false)
         armOpenCv = armOpenCvConfig.files[0].canonicalFile
@@ -133,7 +127,7 @@ task tdownloadOpenCv() {
 
     doFirst {
         def classifier = tgetOpenCvPlatformPackage()
-        def armOpenCvDependency = project.dependencies.create("org.opencv:opencv-jni:3.1.0:$classifier@jar")
+        def armOpenCvDependency = project.dependencies.create("edu.wpi.first.thirdparty.frc2020.opencv:opencv-jni:3.4.7-2:$classifier@jar")
         def armOpenCvConfig = project.configurations.detachedConfiguration(armOpenCvDependency)
         armOpenCvConfig.setTransitive(false)
         armOpenCv = armOpenCvConfig.files[0].canonicalFile

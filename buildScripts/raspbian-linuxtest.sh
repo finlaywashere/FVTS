@@ -1,2 +1,2 @@
 #!/bin/bash
-./gradlew build -PbuildType=arm-raspbian -PtestType=linux-x86_64
+./gradlew build -PbuildType=linuxraspbian -PtestType=linuxx86-64

@@ -90,8 +90,6 @@ public class NetworkTablesInterface extends AbstractInterface {
 			NetworkTable.setClientMode();
 			// Sets the interval for updating NetworkTables
 			NetworkTable.setUpdateRate(0.02);
-			// Sets the vision table to the "vision" table that is in NetworkTables
-			Main.loggingTable = NetworkTable.getTable("logging-level");
 
 			boolean use_GUI = true;
 
@@ -104,19 +102,20 @@ public class NetworkTablesInterface extends AbstractInterface {
 
 				// Sets the team number
 				NetworkTable.setTeam(2706);
-				// Enables DSClient
-				NetworkTable.setDSClientEnabled(true);
 
 			} else {
 
 				if (Main.serverIp.equals("")) {
 					Main.serverIp = "localhost";
 				}
+				String ip = Main.serverIp;
 
-				// Sets the IP adress to connect to
-				NetworkTable.setIPAddress(Main.serverIp);
+				// Sets the IP address to connect to
+				NetworkTable.setIPAddress(ip);
 
 			}
+			// Enables DSClient
+			NetworkTable.setDSClientEnabled(true);
 
 			// Initilizes NetworkTables
 			NetworkTable.initialize();
@@ -125,6 +124,9 @@ public class NetworkTablesInterface extends AbstractInterface {
 		NetworkTable visionTable = NetworkTable.getTable("vision-" + name + "/");
 		NetworkTablesManager.tables.put(name, visionTable);
 		Utils.sendVisionParams(thread.getVisionParams());
+
+		// Sets the vision table to the "vision" table that is in NetworkTables
+		Main.loggingTable = NetworkTable.getTable("logging-level");
 		initLock.unlock();
 	}
 

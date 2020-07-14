@@ -47,6 +47,10 @@ task settestType{
 // Shouldn't need to change anything below this point
 apply from: 'dependencies.gradle'
 
+test {
+	systemProperty 'java.library.path','$projectDir/build/opencv/linux/raspbian/'
+}
+
 sourceSets {
     main {
         java {
@@ -62,24 +66,31 @@ sourceSets {
 
 repositories {
     mavenCentral()
+    
     maven {
-      url "http://first.wpi.edu/FRC/roborio/maven/release"
+       url "https://frcmaven.wpi.edu/artifactory/release/"
     }
+    // FIRST has removed this maven repo
+    //maven {
+    //  url "http://first.wpi.edu/FRC/roborio/maven/release"
+    //}
 }
 
 dependencies {
   compile ntcoreDep()
-  compile 'org.opencv:opencv-java:3.1.0'
+  compile 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-java:3.4.7-2'
   compile 'edu.wpi.first.cameraserver:cameraserver-java:+:'
+  compile 'edu.wpi.first.wpilibj:wpilibj-java:+'
   compile 'junit:junit:4.12'
   compile cscoreDep()
   compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
   compile 'org.apache.commons:commons-csv:1.7'
   compile 'jfree:jfreechart:1.0.13'
   
+  testCompile 'edu.wpi.first.wpilibj:wpilibj-java:+'
   testCompile 'junit:junit:4.12'
   testCompile tntcoreDep()
-  testCompile 'org.opencv:opencv-java:3.1.0'
+  testCompile 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-java:3.4.7-2'
   testCompile 'edu.wpi.first.cameraserver:cameraserver-java:+:'
   testCompile tcscoreDep()
 }
