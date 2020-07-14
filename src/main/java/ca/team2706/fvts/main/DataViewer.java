@@ -34,7 +34,7 @@ public class DataViewer {
 
 		// Must be included!
 		// Loads OpenCV
-		System.loadLibrary(Constants.OPENCV_LIBRARY);
+		System.load(Constants.OPENCV());
 		
 		Log.silence();
 

@@ -80,7 +80,7 @@ public class Main {
 
 		// Must be included!
 		// Loads OpenCV
-		System.loadLibrary(Constants.OPENCV_LIBRARY);
+		System.load(Constants.OPENCV());
 
 		Options options = new Options();
 

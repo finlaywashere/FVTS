@@ -87,12 +87,16 @@ dependencies {
   compile 'org.apache.commons:commons-csv:1.7'
   compile 'jfree:jfreechart:1.0.13'
   
-  testCompile 'edu.wpi.first.wpilibj:wpilibj-java:+'
-  testCompile 'junit:junit:4.12'
   testCompile tntcoreDep()
   testCompile 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-java:3.4.7-2'
   testCompile 'edu.wpi.first.cameraserver:cameraserver-java:+:'
+  testCompile 'edu.wpi.first.wpilibj:wpilibj-java:+'
+  testCompile 'junit:junit:4.12'
   testCompile tcscoreDep()
+  testCompile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+  testCompile 'org.apache.commons:commons-csv:1.7'
+  testCompile 'jfree:jfreechart:1.0.13'
+
 }
 
 jar {
@@ -174,7 +178,7 @@ task zipOutput(type: Zip) {
 
 
 tasks.withType(Test) {
-    systemProperty "java.library.path", "${buildDir}/tests/opencv"
+    systemProperty "java.library.path", "${topenCvUnzipLocation}"
     scanForTestClasses = false
     include "**/*Test.class"
 }
