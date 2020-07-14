@@ -5,11 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.junit.Test;
 import org.opencv.core.Mat;
