@@ -148,19 +148,26 @@ public class Utils {
 
 		return options;
 	}
-
 	/**
 	 * Loads the visionTable params! :]
 	 * @return the list of vision parameters
 	 **/
 
 	public static List<VisionParams> loadVisionParams() {
+		return loadVisionParams(Main.visionParamsFile);
+	}
+	/**
+	 * Loads the visionTable params! :]
+	 * @return the list of vision parameters
+	 **/
+
+	public static List<VisionParams> loadVisionParams(File paramsFile) {
 		try {
-			List<String> lists = ConfigParser.listLists(Main.visionParamsFile);
+			List<String> lists = ConfigParser.listLists(paramsFile);
 			List<VisionParams> ret = new ArrayList<VisionParams>();
 			for (String s : lists) {
 				try {
-					Map<String, Map<String, String>> data = ConfigParser.getProperties(Main.visionParamsFile, s);
+					Map<String, Map<String, String>> data = ConfigParser.getProperties(paramsFile, s);
 
 					List<Attribute> attribs = new ArrayList<Attribute>();
 					attribs.add(new Attribute("name", s));
@@ -208,7 +215,7 @@ public class Utils {
 					ret.add(params);
 				} catch (Exception e) {
 					Log.e("Error in config " + s, true);
-					throw new Exception();
+					throw e;
 				}
 			}
 			return ret;
@@ -233,19 +240,30 @@ public class Utils {
 	 * Saves the vision parameters to a file
 	 * 
 	 **/
+	
 	public static void saveVisionParams() {
+		saveVisionParams(Main.visionParamsFile);
+	}
+	/**
+	 * Saves the vision parameters to a file
+	 * 
+	 **/
+	
+	public static void saveVisionParams(File f) {
 		try {
 
 			for (VisionParams params : Main.visionParamsList) {
-				Utils.saveVisionParams(params);
+				Utils.saveVisionParams(params, f);
 			}
 
 		} catch (Exception e1) {
 			Log.e(e1.getMessage(), true);
 		}
 	}
-
 	public static void saveVisionParams(VisionParams params) throws Exception {
+		saveVisionParams(params, Main.visionParamsFile);
+	}
+	public static void saveVisionParams(VisionParams params, File f) throws Exception {
 		Map<String, Map<String,String>> data = new HashMap<String, Map<String,String>>();
 
 		for (Attribute a : params.getAttribs()) {
@@ -259,7 +277,7 @@ public class Utils {
 			}
 		}
 
-		ConfigParser.saveList(Main.visionParamsFile, params.getByName("name").getValue(), data);
+		ConfigParser.saveList(f, params.getByName("name").getValue(), data);
 	}
 
 	public static int findFirstAvailable(String pattern) {
