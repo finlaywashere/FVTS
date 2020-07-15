@@ -251,7 +251,6 @@ public class ConfigParser {
 			newLines = lines;
 		}
 
-		// We have the fjson file minus the list we want to save
 
 		newLines.add(name + ":");
 
