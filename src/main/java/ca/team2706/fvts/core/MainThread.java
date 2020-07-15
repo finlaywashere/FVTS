@@ -94,6 +94,7 @@ public class MainThread extends Thread {
 	private AbstractPipeline pipeline;
 	private List<AbstractMathProcessor> maths;
 	private List<AbstractImagePreprocessor> processors;
+	public boolean overrideCamera = false;
 
 	@Override
 	public void run() {
@@ -102,7 +103,7 @@ public class MainThread extends Thread {
 		frame = new Mat();
 
 		AbstractInputDevice input = AbstractInputDevice.getByName(visionParams.getByName("core/type").getValue());
-		useCamera = !input.isStaticFrame();
+		useCamera = !input.isStaticFrame() | overrideCamera;
 		try {
 			VisionCameraServer.initCamera(visionParams.getByName("core/type").getValue(),
 					visionParams.getByName("core/identifier").getValue());
@@ -135,7 +136,7 @@ public class MainThread extends Thread {
 				error = true;
 			}
 		}
-
+		
 		File csvFile = new File(visionParams.getByName("core/csvLog").getValue().replaceAll("\\$1", "" + Main.runID));
 
 		long lastTime = System.currentTimeMillis();
@@ -325,8 +326,10 @@ public class MainThread extends Thread {
 				}
 			}
 		}
-		guiProcessedImg.close();
-		guiRawImg.close();
+		if(use_GUI) {
+			guiProcessedImg.close();
+			guiRawImg.close();
+		}
 	}
 
 	public void updateParams(VisionParams params) {

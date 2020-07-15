@@ -33,13 +33,13 @@ public class VisionParamsTest {
 			fail();
 		}
 		options.add(new AttributeOptions("test3", true));
-		Log.silence();
+		Log.silenceE();
 		try {
 			new VisionParams(attribs, options);
 			fail();
 		}catch(Exception e) {
 		}
-		Log.unsilence();
+		Log.unsilenceE();
 	}
 
 }
