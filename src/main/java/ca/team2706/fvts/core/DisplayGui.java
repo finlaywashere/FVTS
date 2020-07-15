@@ -30,6 +30,8 @@ public class DisplayGui extends JFrame implements Runnable {
 
 	public boolean b = true;
 
+	private Thread thread;
+	
 	/**
 	 * Instantiates a new display gui.
 	 *
@@ -55,7 +57,8 @@ public class DisplayGui extends JFrame implements Runnable {
 		// Sets the window title
 		this.setTitle(windowTitle);
 		// Starts the rendering thread
-		new Thread(this).start();
+		thread = new Thread(this);
+		thread.start();
 	}
 
 	public int getWidth() {
@@ -68,6 +71,17 @@ public class DisplayGui extends JFrame implements Runnable {
 
 	public BufferedImage getImage() {
 		return image;
+	}
+	
+	public void close() {
+		b = false;
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		setVisible(false);
+		dispose();
 	}
 
 	/**
@@ -94,7 +108,8 @@ public class DisplayGui extends JFrame implements Runnable {
 		// Sets the title to the window title
 		this.setTitle(windowTitle);
 		// Starts the rendering thread
-		new Thread(this).start();
+		thread = new Thread(this);
+		thread.start();
 	}
 
 	/**

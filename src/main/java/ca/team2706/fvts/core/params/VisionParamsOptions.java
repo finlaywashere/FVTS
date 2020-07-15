@@ -44,4 +44,16 @@ public class VisionParamsOptions {
 		}
 		attribs.add(a);
 	}
+	public void copyMeta() {
+		for(AttributeOptions o : options) {
+			for(Attribute a : attribs) {
+				if(a.getName().equals(o.getName())) {
+					a.setType(o.getType());
+					a.setMin(o.getMin());
+					a.setMax(o.getMax());
+					a.setMultiplier(o.getMultiplier());
+				}
+			}
+		}
+	}
 }

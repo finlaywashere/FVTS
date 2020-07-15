@@ -10,9 +10,9 @@ import org.opencv.imgproc.Imgproc;
 import ca.team2706.fvts.core.MainThread;
 import ca.team2706.fvts.core.params.AttributeOptions;
 
-public class ImageResizingProcessor extends AbstractImagePreprocessor{
+public class ImageResizingPreprocessor extends AbstractImagePreprocessor{
 
-	public ImageResizingProcessor() {
+	public ImageResizingPreprocessor() {
 		super("resize");
 	}
 

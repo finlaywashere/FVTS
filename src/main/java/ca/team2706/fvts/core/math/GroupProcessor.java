@@ -127,10 +127,10 @@ public class GroupProcessor extends AbstractMathProcessor {
 
 			target3.data.put("boundingBox", new Rect((int) x, (int) y, (int) width, (int) height));
 			target3.data.put("xCentre", (int) (x + (width / 2)));
-			target3.data.put("xCentreNorm", new Double(((Integer) target3.data.get("xCentre") - (visionData.binMask.width() / 2))
+			target3.data.put("xCentreNorm", Double.valueOf(((Integer) target3.data.get("xCentre") - (visionData.binMask.width() / 2))
 					/ (visionData.binMask.width() / 2)));
 			target3.data.put("yCentre", (int) (y + (height / 2)));
-			target3.data.put("yCentreNorm", new Double(((Integer) target3.data.get("yCentre") - (visionData.binMask.height() / 2))
+			target3.data.put("yCentreNorm", Double.valueOf(((Integer) target3.data.get("yCentre") - (visionData.binMask.height() / 2))
 					/ (visionData.binMask.height() / 2)));
 			Rect t3Box = (Rect) target3.data.get("boundingBox");
 			target3.data.put("areaNorm", (t3Box.height * t3Box.width)

@@ -13,7 +13,7 @@ import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.params.AttributeOptions;
 import ca.team2706.fvts.main.Main;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-
+@SuppressWarnings("deprecation")
 public class NetworkTablesInterface extends AbstractInterface {
 
 	public NetworkTablesInterface() {

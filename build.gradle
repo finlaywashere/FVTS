@@ -5,6 +5,7 @@ plugins {
   id 'java'
   id 'application'
   id 'maven-publish'
+  id 'jacoco'
 }
 
 // Change the line below if you change the name of your main Java class
@@ -47,6 +48,10 @@ task settestType{
 // Shouldn't need to change anything below this point
 apply from: 'dependencies.gradle'
 
+test {
+	systemProperty 'java.library.path','$projectDir/build/opencv/linux/raspbian/'
+}
+
 sourceSets {
     main {
         java {
@@ -62,26 +67,37 @@ sourceSets {
 
 repositories {
     mavenCentral()
+    
     maven {
-      url "http://first.wpi.edu/FRC/roborio/maven/release"
+       url "https://frcmaven.wpi.edu/artifactory/release/"
     }
+    // FIRST has removed this maven repo
+    //maven {
+    //  url "http://first.wpi.edu/FRC/roborio/maven/release"
+    //}
 }
 
 dependencies {
   compile ntcoreDep()
-  compile 'org.opencv:opencv-java:3.1.0'
+  compile 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-java:3.4.7-2'
   compile 'edu.wpi.first.cameraserver:cameraserver-java:+:'
+  compile 'edu.wpi.first.wpilibj:wpilibj-java:+'
   compile 'junit:junit:4.12'
   compile cscoreDep()
   compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
   compile 'org.apache.commons:commons-csv:1.7'
   compile 'jfree:jfreechart:1.0.13'
   
-  testCompile 'junit:junit:4.12'
   testCompile tntcoreDep()
-  testCompile 'org.opencv:opencv-java:3.1.0'
+  testCompile 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-java:3.4.7-2'
   testCompile 'edu.wpi.first.cameraserver:cameraserver-java:+:'
+  testCompile 'edu.wpi.first.wpilibj:wpilibj-java:+'
+  testCompile 'junit:junit:4.12'
   testCompile tcscoreDep()
+  testCompile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+  testCompile 'org.apache.commons:commons-csv:1.7'
+  testCompile 'jfree:jfreechart:1.0.13'
+
 }
 
 jar {
@@ -163,7 +179,7 @@ task zipOutput(type: Zip) {
 
 
 tasks.withType(Test) {
-    systemProperty "java.library.path", "${buildDir}/tests/opencv"
+    systemProperty "java.library.path", "${topenCvUnzipLocation}"
     scanForTestClasses = false
     include "**/*Test.class"
 }
@@ -195,6 +211,24 @@ publishing {
     }
   }
 }
+
+
+test {
+  finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+
+jacocoTestReport {
+  dependsOn test
+  reports {
+    xml.enabled false
+    csv.enabled false
+    html.destination file("${buildDir}/jacocoHtml")
+  }
+}
+
+
+
 
 build.dependsOn setbuildType
 test.dependsOn settestType

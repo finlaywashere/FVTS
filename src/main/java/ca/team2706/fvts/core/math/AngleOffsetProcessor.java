@@ -22,10 +22,7 @@ public class AngleOffsetProcessor extends AbstractMathProcessor {
 		VisionParams visionParams = visionData.params;
 		/*
 		 * 
-		 * Time to math the distance y = height of cube x = distance from cube
-		 * 
-		 * using y = mx+b we can determine that the formula to calculate x from y is x =
-		 * (y-b)/m
+		 * Calculates a magical distance offset based on the angle of an object using quadratics and fine tuning
 		 * 
 		 * 
 		 */

@@ -34,6 +34,7 @@ public abstract class AbstractInputDevice {
 			inputs.add(new USBCameraInputDevice());
 			inputs.add(new ImageDummyInputDevice());
 			inputs.add(new VideoDummyInputDevice());
+			inputs.add(new DummyInputDevice());
 		}
 		for(AbstractInputDevice input : inputs) {
 			if(input.getName().equalsIgnoreCase(name))

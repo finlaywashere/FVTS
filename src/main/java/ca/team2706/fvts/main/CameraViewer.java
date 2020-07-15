@@ -13,7 +13,9 @@ import ca.team2706.fvts.core.VisionCameraServer;
 public class CameraViewer {
 	public static void main(String[] args) {
 		System.out.println("FVTS CameraViewer " + Constants.VERSION_STRING + " developed by " + Constants.AUTHOR);
-		System.loadLibrary(Constants.OPENCV_LIBRARY);
+		// Must be included!
+		// Loads OpenCV
+		System.load(Constants.OPENCV());
 		int cameraNum = -1;
 		if (args.length > 0) {
 			try {

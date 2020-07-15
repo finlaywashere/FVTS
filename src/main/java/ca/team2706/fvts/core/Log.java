@@ -18,7 +18,14 @@ public class Log {
 	public static void unsilence() {
 		silence = false;
 	}
+	private static boolean silenceE = false;
 	
+	public static void silenceE() {
+		silenceE = true;
+	}
+	public static void unsilenceE() {
+		silenceE = false;
+	}
 	public static void i(String message,boolean logToCLI){
 		if(silence) return;
 		if(logToCLI){
@@ -34,7 +41,7 @@ public class Log {
 		System.out.println("Verbose: "+message);
 	}
 	public static void e(String message,boolean logToCLI){
-		if(silence) return;
+		if(silenceE) return;
 		if(logToCLI){
 			CLI.log("Error: "+message);
 		}

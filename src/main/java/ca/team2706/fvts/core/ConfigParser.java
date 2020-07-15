@@ -62,7 +62,10 @@ public class ConfigParser {
 		for (int i = startLine + 1; i < endLine; i++) {
 
 			// Get the line and remove the spaces
-			String s = lines.get(i).substring(2);
+			String s = lines.get(i);
+			if(s.isEmpty())
+				continue;
+			s = s.substring(2);
 			if (sectionName == null && s.endsWith(":")) {
 				sectionName = s.substring(0, s.length() - 1);
 				curr = new HashMap<String, String>();
@@ -248,7 +251,6 @@ public class ConfigParser {
 			newLines = lines;
 		}
 
-		// We have the fjson file minus the list we want to save
 
 		newLines.add(name + ":");
 

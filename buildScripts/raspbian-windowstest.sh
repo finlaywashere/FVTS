@@ -1,2 +1,2 @@
 #!/bin/bash
-./gradlew build -PbuiltType=raspbian -PtestType=windows $@
+./gradlew build -PbuiltType=linuxraspbian -PtestType=windowsx86-64 $@

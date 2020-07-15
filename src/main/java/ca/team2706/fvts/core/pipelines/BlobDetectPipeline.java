@@ -93,9 +93,9 @@ public class BlobDetectPipeline extends AbstractPipeline {
 				target.data.put("boundingBox", boundingRect);
 				target.data.put("contour", contour);
 				target.data.put("xCentre", boundingRect.x + (boundingRect.width / 2));
-				target.data.put("xCentreNorm", new Double((((Integer)target.data.get("xCentre")) - (src.width() / 2)) / (src.width() / 2)));
+				target.data.put("xCentreNorm", Double.valueOf((((Integer)target.data.get("xCentre")) - (src.width() / 2)) / (src.width() / 2)));
 				target.data.put("yCentre", boundingRect.y + (boundingRect.height / 2));
-				target.data.put("yCentreNorm", new Double((((Integer)target.data.get("yCentre")) - (src.height() / 2)) / (src.height() / 2)));
+				target.data.put("yCentreNorm", Double.valueOf((((Integer)target.data.get("yCentre")) - (src.height() / 2)) / (src.height() / 2)));
 				target.data.put("areaNorm", areaNorm);
 				visionData.targetsFound.add(target);
 			}
@@ -147,14 +147,14 @@ public class BlobDetectPipeline extends AbstractPipeline {
 	@Override
 	public List<AttributeOptions> getOptions() {
 		List<AttributeOptions> ret = new ArrayList<AttributeOptions>();
-		AttributeOptions minHue = new AttributeOptions(getName()+"/"+"minHue", true);
-		AttributeOptions maxHue = new AttributeOptions(getName()+"/"+"maxHue", true);
-		AttributeOptions minSat = new AttributeOptions(getName()+"/"+"minSaturation", true);
-		AttributeOptions maxSat = new AttributeOptions(getName()+"/"+"maxSaturation", true);
-		AttributeOptions minVal = new AttributeOptions(getName()+"/"+"minValue", true);
-		AttributeOptions maxVal = new AttributeOptions(getName()+"/"+"maxValue", true);
+		AttributeOptions minHue = new AttributeOptions(getName()+"/"+"minHue", true,AttributeOptions.SLIDER,0,255);
+		AttributeOptions maxHue = new AttributeOptions(getName()+"/"+"maxHue", true,AttributeOptions.SLIDER,0,255);
+		AttributeOptions minSat = new AttributeOptions(getName()+"/"+"minSaturation", true,AttributeOptions.SLIDER,0,255);
+		AttributeOptions maxSat = new AttributeOptions(getName()+"/"+"maxSaturation", true,AttributeOptions.SLIDER,0,255);
+		AttributeOptions minVal = new AttributeOptions(getName()+"/"+"minValue", true,AttributeOptions.SLIDER,0,255);
+		AttributeOptions maxVal = new AttributeOptions(getName()+"/"+"maxValue", true,AttributeOptions.SLIDER,0,255);
 
-		AttributeOptions minArea = new AttributeOptions(getName()+"/"+"minArea", true);
+		AttributeOptions minArea = new AttributeOptions(getName()+"/"+"minArea", true,AttributeOptions.SLIDER_DOUBLE,0,1,100);
 
 		AttributeOptions erodeDilateIterations = new AttributeOptions(getName()+"/"+"erodeDilateIterations", true);
 
