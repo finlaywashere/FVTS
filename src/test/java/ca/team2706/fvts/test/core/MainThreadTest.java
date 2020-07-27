@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import ca.team2706.fvts.core.Constants;
+import ca.team2706.fvts.core.LibraryLoader;
 import ca.team2706.fvts.core.Log;
 import ca.team2706.fvts.core.MainThread;
 import ca.team2706.fvts.core.params.Attribute;
@@ -21,7 +21,7 @@ public class MainThreadTest {
 	public void mainThreadTest() throws Exception{
 		// Must be included!
 		// Loads OpenCV
-		System.load(Constants.OPENCV());
+		LibraryLoader.loadOpenCV();
 		List<Attribute> attribs = new ArrayList<Attribute>();
 		attribs.add(new Attribute("name","test"));
 		attribs.add(new Attribute("core/interface","dummy"));

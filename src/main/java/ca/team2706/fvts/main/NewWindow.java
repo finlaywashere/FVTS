@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import ca.team2706.fvts.core.Constants;
+import ca.team2706.fvts.core.LibraryLoader;
 import ca.team2706.fvts.core.Log;
 import ca.team2706.fvts.core.ParamsSelector;
 import ca.team2706.fvts.core.VisionCameraServer;
@@ -54,7 +54,7 @@ public class NewWindow extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		// Must be included!
 		// Loads OpenCV
-		System.load(Constants.OPENCV());
+		LibraryLoader.loadOpenCV();
 		VisionCameraServer.startServer();
 		
 		if(args.length > 0) {

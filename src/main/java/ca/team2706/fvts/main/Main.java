@@ -15,6 +15,7 @@ import org.apache.commons.cli.Options;
 import ca.team2706.fvts.core.ConfigParser;
 import ca.team2706.fvts.core.Constants;
 import ca.team2706.fvts.core.ImageDumpScheduler;
+import ca.team2706.fvts.core.LibraryLoader;
 import ca.team2706.fvts.core.Log;
 import ca.team2706.fvts.core.MainThread;
 import ca.team2706.fvts.core.NetworkTablesManager;
@@ -81,7 +82,7 @@ public class Main {
 
 		// Must be included!
 		// Loads OpenCV
-		System.load(Constants.OPENCV());
+		LibraryLoader.loadOpenCV();
 
 		Options options = new Options();
 

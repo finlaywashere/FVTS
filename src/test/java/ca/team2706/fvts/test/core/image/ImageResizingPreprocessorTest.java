@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Test;
 import org.opencv.core.Mat;
 
-import ca.team2706.fvts.core.Constants;
+import ca.team2706.fvts.core.LibraryLoader;
 import ca.team2706.fvts.core.MainThread;
 import ca.team2706.fvts.core.Utils;
 import ca.team2706.fvts.core.image.ImageResizingPreprocessor;
@@ -23,7 +23,7 @@ public class ImageResizingPreprocessorTest {
 	public void imageResizingPreprocessorTest() throws Exception{
 		// Must be included!
 		// Loads OpenCV
-		System.load(Constants.OPENCV());
+		LibraryLoader.loadOpenCV();
 		ImageResizingPreprocessor processor = new ImageResizingPreprocessor();
 		List<Attribute> attribs = new ArrayList<Attribute>();
 		attribs.add(new Attribute("resize/width", "200"));
