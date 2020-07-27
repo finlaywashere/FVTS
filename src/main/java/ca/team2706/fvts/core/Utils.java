@@ -4,7 +4,9 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -153,21 +155,35 @@ public class Utils {
 	 * @return the list of vision parameters
 	 **/
 
-	public static List<VisionParams> loadVisionParams() {
-		return loadVisionParams(Main.visionParamsFile);
+	public List<VisionParams> loadVisionParams() {
+		try {
+			if(!Main.visionParamsFile.equalsIgnoreCase("fallback") || !new File(Main.visionParamsFile).exists()) {
+				FileInputStream file = new FileInputStream(new File(Main.visionParamsFile));
+				List<VisionParams> params = loadVisionParams(file);
+				file.close();
+				return params;
+			}else {
+				List<VisionParams> params = loadVisionParams(getClass().getResourceAsStream("visionParams.properties"));
+				return params;
+			}
+		}catch(Exception e) {
+			Log.e("Failed to load vision parameters!", true);
+		}
+		return null;
 	}
 	/**
 	 * Loads the visionTable params! :]
 	 * @return the list of vision parameters
 	 **/
 
-	public static List<VisionParams> loadVisionParams(File paramsFile) {
+	public List<VisionParams> loadVisionParams(InputStream paramsFile) {
 		try {
-			List<String> lists = ConfigParser.listLists(paramsFile);
+			List<String> lines = ConfigParser.readLines(paramsFile);
+			List<String> lists = ConfigParser.listLists(lines);
 			List<VisionParams> ret = new ArrayList<VisionParams>();
 			for (String s : lists) {
 				try {
-					Map<String, Map<String, String>> data = ConfigParser.getProperties(paramsFile, s);
+					Map<String, Map<String, String>> data = ConfigParser.getProperties(lines, s);
 
 					List<Attribute> attribs = new ArrayList<Attribute>();
 					attribs.add(new Attribute("name", s));
@@ -218,10 +234,12 @@ public class Utils {
 					throw e;
 				}
 			}
+			paramsFile.close();
 			return ret;
 
 		} catch (Exception e1) {
-			Log.e("\n\nError reading the params file, check if the file is corrupt?", true);
+			e1.printStackTrace();
+			Log.e("\nError reading the params file, check if the file is corrupt?", true);
 			System.exit(1);
 		}
 		return null;
@@ -242,7 +260,7 @@ public class Utils {
 	 **/
 	
 	public static void saveVisionParams() {
-		saveVisionParams(Main.visionParamsFile);
+		saveVisionParams(new File(Main.visionParamsFile));
 	}
 	/**
 	 * Saves the vision parameters to a file
@@ -261,7 +279,7 @@ public class Utils {
 		}
 	}
 	public static void saveVisionParams(VisionParams params) throws Exception {
-		saveVisionParams(params, Main.visionParamsFile);
+		saveVisionParams(params, new File(Main.visionParamsFile));
 	}
 	public static void saveVisionParams(VisionParams params, File f) throws Exception {
 		Map<String, Map<String,String>> data = new HashMap<String, Map<String,String>>();

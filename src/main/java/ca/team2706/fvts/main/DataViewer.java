@@ -1,6 +1,7 @@
 package ca.team2706.fvts.main;
 
-import java.io.File;
+import java.io.FileInputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
@@ -61,14 +62,15 @@ public class DataViewer {
 
 		Main.developmentMode = cmd.hasOption("development");
 
-		Main.visionParamsFile = new File(cmd.getOptionValue("config", "visionParams.properties"));
+		Main.visionParamsFile = cmd.getOptionValue("config", "visionParams.properties");
 
 		// read the vision calibration values from file.
-		Utils.loadVisionParams();
+		Main.visionParamsList = new Utils().loadVisionParams();
 
-		Map<String, String> masterConfig = ConfigParser.getPropertiesM(new File("master.cf"), "config");
+		List<String> lines = ConfigParser.readLines(new FileInputStream("master.cf"));
+		Map<String, String> masterConfig = ConfigParser.getPropertiesM(lines, "config");
 
-		Map<String, String> masterEnabled = ConfigParser.getPropertiesM(new File("master.cf"), "enabled");
+		Map<String, String> masterEnabled = ConfigParser.getPropertiesM(lines, "enabled");
 
 		// Go through and enable the configs
 		for (String s : masterEnabled.keySet()) {

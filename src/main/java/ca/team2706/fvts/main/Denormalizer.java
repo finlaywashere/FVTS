@@ -1,15 +1,11 @@
 package ca.team2706.fvts.main;
 
-import java.io.File;
 import java.util.Scanner;
 
-import ca.team2706.fvts.core.Utils;
 import ca.team2706.fvts.core.params.VisionParams;
 
 public class Denormalizer {
 	public static void main(String[] args) {
-		Main.visionParamsFile = new File("visionParams.properties");
-		Utils.loadVisionParams();
 		Scanner in = new Scanner(System.in);
 		while(true) {
 			System.out.print("Profile name (or END to exit): ");

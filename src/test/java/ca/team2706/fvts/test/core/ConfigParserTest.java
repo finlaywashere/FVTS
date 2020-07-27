@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -48,7 +49,7 @@ public class ConfigParserTest {
 		
 		Map<String,Map<String,String>> props = null;
 		try {
-			props = ConfigParser.getProperties(tmpConfig, "test");
+			props = ConfigParser.getProperties(ConfigParser.readLines(new FileInputStream(tmpConfig)), "test");
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -67,7 +68,7 @@ public class ConfigParserTest {
 		f.delete();
 		f.createNewFile();
 		ConfigParser.saveList(f, "test5", properties);
-		Map<String,Map<String,String>> read = ConfigParser.getProperties(f, "test5");
+		Map<String,Map<String,String>> read = ConfigParser.getProperties(ConfigParser.readLines(new FileInputStream(f)), "test5");
 		assertEquals(properties, read);
 		
 		f.delete();
@@ -81,7 +82,7 @@ public class ConfigParserTest {
 		out.println("test:");
 		out.println("  test2=true");
 		out.close();
-		Map<String,String> properties = ConfigParser.getPropertiesM(f, "test");
+		Map<String,String> properties = ConfigParser.getPropertiesM(ConfigParser.readLines(new FileInputStream(f)), "test");
 		assertEquals(1,properties.keySet().size());
 		assertEquals("test2",properties.keySet().iterator().next());
 		assertEquals("true",properties.get("test2"));
@@ -98,7 +99,7 @@ public class ConfigParserTest {
 		out.println("test3:");
 		out.println("  test4=false");
 		out.close();
-		List<String> lists = ConfigParser.listLists(f);
+		List<String> lists = ConfigParser.listLists(ConfigParser.readLines(new FileInputStream(f)));
 		assertEquals(2,lists.size());
 		assertEquals("test",lists.get(0));
 		assertEquals("test3",lists.get(1));

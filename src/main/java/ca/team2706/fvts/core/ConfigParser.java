@@ -2,6 +2,7 @@ package ca.team2706.fvts.core;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,17 +12,15 @@ import java.util.Scanner;
 
 public class ConfigParser {
 
-	public static Map<String, Map<String, String>> getProperties(File f, String name) throws Exception {
-
+	public static List<String> readLines(InputStream input) throws Exception{
 		List<String> lines = new ArrayList<String>();
-
-		Scanner in = new Scanner(f);
-
-		while (in.hasNextLine()) {
+		Scanner in = new Scanner(input);
+		while(in.hasNextLine())
 			lines.add(in.nextLine());
-		}
-
 		in.close();
+		return lines;
+	}
+	public static Map<String, Map<String, String>> getProperties(List<String> lines, String name) throws Exception {
 
 		int startLine = 0, endLine = 0;
 
@@ -88,22 +87,11 @@ public class ConfigParser {
 		if(sectionName != null) {
 			properties.put(sectionName, curr);
 		}
-
 		return properties;
 
 	}
 
-	public static Map<String, String> getPropertiesM(File f, String name) throws Exception {
-
-		List<String> lines = new ArrayList<String>();
-
-		Scanner in = new Scanner(f);
-
-		while (in.hasNextLine()) {
-			lines.add(in.nextLine());
-		}
-
-		in.close();
+	public static Map<String, String> getPropertiesM(List<String> lines, String name) throws Exception {
 
 		int startLine = 0, endLine = 0;
 
@@ -150,21 +138,11 @@ public class ConfigParser {
 				properties.put(key, value);
 			}
 		}
-
 		return properties;
 
 	}
 
-	public static List<String> listLists(File f) throws Exception {
-
-		Scanner in = new Scanner(f);
-		List<String> lines = new ArrayList<String>();
-
-		while (in.hasNextLine()) {
-			lines.add(in.nextLine());
-		}
-
-		in.close();
+	public static List<String> listLists(List<String> lines) throws Exception {
 
 		List<String> lists = new ArrayList<String>();
 
@@ -183,7 +161,6 @@ public class ConfigParser {
 			}
 
 		}
-
 		return lists;
 
 	}

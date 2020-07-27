@@ -3,6 +3,7 @@ package ca.team2706.fvts.test.core;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class UtilsTest {
 		VisionParams params2 = new VisionParams(attribs,new ArrayList<AttributeOptions>());
 		Utils.saveVisionParams(params2, f);
 		
-		List<VisionParams> params = Utils.loadVisionParams(f);
+		List<VisionParams> params = new Utils().loadVisionParams(new FileInputStream(f));
 		
 		assertEquals("test7",params.get(0).getByName("name").getValue());
 		assertEquals("test4",params.get(1).getByName("name").getValue());
