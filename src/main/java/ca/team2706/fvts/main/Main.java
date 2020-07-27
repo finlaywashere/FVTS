@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 @SuppressWarnings("deprecation")
 public class Main {
 
-	public static final File MASTER_CONFIG_FILE = new File("master.cf");
+	public static File MASTER_CONFIG_FILE = new File("master.cf");
 
 	public static String filename = "";
 	public static int timestamp = 0;
@@ -40,6 +40,7 @@ public class Main {
 	public static boolean pubAll = false;
 	public static int runID;
 	public static String serverIp = "";
+	public static CommandLine cmd = null;
 
 	public static List<MainThread> threads = new ArrayList<MainThread>();
 
@@ -80,9 +81,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		System.out.println("FVTS Main " + Constants.VERSION_STRING + " developed by " + Constants.AUTHOR);
 
-		// Must be included!
-		// Loads OpenCV
-		LibraryLoader.loadOpenCV();
+		
 
 		Options options = new Options();
 
@@ -92,10 +91,14 @@ public class Main {
 		options.addOption(developmentMode);
 		Option configFile = new Option("conf", "config", true, "Specifies an alternative config file");
 		options.addOption(configFile);
-
+		Option masterFile = new Option("mast", "master", true, "Specifies an alternative master config file");
+		options.addOption(masterFile);
+		Option openCVOverride = new Option("cv","opencv", true, "Specifies an alternative OpenCV binary file");
+		options.addOption(openCVOverride);
+		
 		CommandLineParser parser = new DefaultParser();
 		HelpFormatter formatter = new HelpFormatter();
-		CommandLine cmd = null;
+		cmd = null;
 		try {
 			cmd = parser.parse(options, args);
 		} catch (Exception e) {
@@ -104,6 +107,14 @@ public class Main {
 			System.exit(1);
 		}
 		Main.developmentMode = cmd.hasOption("development");
+		
+		// Must be included!
+		// Loads OpenCV
+		LibraryLoader.loadOpenCV(cmd.getOptionValue("opencv", null));
+		
+		if(cmd.hasOption("master")) {
+			MASTER_CONFIG_FILE = new File(cmd.getOptionValue("master",null));
+		}
 
 		// Connect NetworkTables, and get access to the publishing table
 		serverIp = cmd.getOptionValue("ip", "");

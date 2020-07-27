@@ -5,7 +5,14 @@ import java.io.File;
 public class LibraryLoader {
 	public static final String OPENCV_LIBRARY = "opencv_java347";
 	
-	public static final String loadOpenCV() {
+	public static final void loadOpenCV() {
+		loadOpenCV(null);
+	}
+	public static final void loadOpenCV(String override) {
+		if(override != null) {
+			System.load(override);
+			return;
+		}
 		String os = System.getProperty("os.name");
 		String arch = System.getProperty("os.arch");
 		String lpath = System.getProperty("java.library.path");
@@ -31,8 +38,10 @@ public class LibraryLoader {
 		String[] paths = lpath.split(":");
 		for(String s : paths) {
 			File f = new File(s,path);
-			if(f.exists())
+			if(f.exists()) {
 				System.load(f.getPath());
+				return;
+			}
 		}
 		throw new RuntimeException("Could not find OpenCV!!!");
 	}
