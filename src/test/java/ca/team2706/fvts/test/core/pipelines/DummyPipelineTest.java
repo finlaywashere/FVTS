@@ -20,7 +20,7 @@ public class DummyPipelineTest {
 	public void dummyPipelineTest() throws Exception {
 		// Must be included!
 		// Loads OpenCV
-		LibraryLoader.loadOpenCV();
+		LibraryLoader.loadLibraries();
 		Mat src = new Mat();
 		VisionParams params = new VisionParams(new ArrayList<Attribute>(), new ArrayList<AttributeOptions>());
 		DummyPipeline pipeline = new DummyPipeline();

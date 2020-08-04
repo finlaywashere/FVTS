@@ -11,7 +11,7 @@ public class VisionDataTest {
 	public void visionDataTest() {
 		// Must be included!
 		// Loads OpenCV
-		LibraryLoader.loadOpenCV();
+		LibraryLoader.loadLibraries();
 		new VisionData();
 	}
 

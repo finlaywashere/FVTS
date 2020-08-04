@@ -22,7 +22,7 @@ public class PrefferedTargetProcessorTest {
 	public void prefferedTargetProcessorTest() throws Exception {
 		// Must be included!
 		// Loads OpenCV
-		LibraryLoader.loadOpenCV();
+		LibraryLoader.loadLibraries();
 		PrefferedTargetProcessor processor = new PrefferedTargetProcessor();
 		VisionData data = new VisionData();
 		List<Attribute> attribs = new ArrayList<Attribute>();

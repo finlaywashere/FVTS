@@ -36,7 +36,7 @@ public class DataViewer {
 
 		// Must be included!
 		// Loads OpenCV
-		LibraryLoader.loadOpenCV();
+		LibraryLoader.loadLibraries();
 		
 		Log.silence();
 

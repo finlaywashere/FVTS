@@ -16,7 +16,7 @@ public class CameraViewer {
 		System.out.println("FVTS CameraViewer " + Constants.VERSION_STRING + " developed by " + Constants.AUTHOR);
 		// Must be included!
 		// Loads OpenCV
-		LibraryLoader.loadOpenCV();
+		LibraryLoader.loadLibraries();
 		int cameraNum = -1;
 		if (args.length > 0) {
 			try {

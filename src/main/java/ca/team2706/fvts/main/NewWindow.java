@@ -54,7 +54,7 @@ public class NewWindow extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		// Must be included!
 		// Loads OpenCV
-		LibraryLoader.loadOpenCV();
+		LibraryLoader.loadLibraries();
 		VisionCameraServer.startServer();
 		
 		if(args.length > 0) {

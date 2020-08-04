@@ -22,7 +22,7 @@ public class DummyInterfaceTest {
 	public void dummyInterfaceTest() throws Exception {
 		// Must be included!
 		// Loads OpenCV
-		LibraryLoader.loadOpenCV();
+		LibraryLoader.loadLibraries();
 		List<Attribute> attribs = new ArrayList<Attribute>();
 		attribs.add(new Attribute("core/interface", "dummy"));
 		attribs.add(new Attribute("core/pipeline", "dummy"));

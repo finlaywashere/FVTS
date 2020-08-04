@@ -23,7 +23,7 @@ public class ImageCropPreprocessorTest {
 	public void imageCropPreprocessorTest() throws Exception {
 		// Must be included!
 		// Loads OpenCV
-		LibraryLoader.loadOpenCV();
+		LibraryLoader.loadLibraries();
 		ImageCropPreprocessor crop = new ImageCropPreprocessor();
 		List<Attribute> attribs = new ArrayList<Attribute>();
 		attribs.add(new Attribute("crop/cX1","0.25"));

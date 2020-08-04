@@ -23,7 +23,7 @@ public class ImageResizingPreprocessorTest {
 	public void imageResizingPreprocessorTest() throws Exception{
 		// Must be included!
 		// Loads OpenCV
-		LibraryLoader.loadOpenCV();
+		LibraryLoader.loadLibraries();
 		ImageResizingPreprocessor processor = new ImageResizingPreprocessor();
 		List<Attribute> attribs = new ArrayList<Attribute>();
 		attribs.add(new Attribute("resize/width", "200"));

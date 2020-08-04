@@ -24,7 +24,7 @@ public class BlobDetectPipelineTest {
 	public void blobDetectTest() throws Exception {
 		// Must be included!
 		// Loads OpenCV
-		LibraryLoader.loadOpenCV();
+		LibraryLoader.loadLibraries();
 		BlobDetectPipeline pipeline = new BlobDetectPipeline();
 		// No need for a pipeline.init() because the blob detect pipeline doesn't require it
 		

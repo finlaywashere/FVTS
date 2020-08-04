@@ -100,7 +100,7 @@ public class Main {
 		
 		// Must be included!
 		// Loads OpenCV
-		LibraryLoader.loadLibraries(cmd.getOptionValue("opencv", null), null, null);
+		LibraryLoader.loadLibraries(cmd.getOptionValue("opencv", null));
 		
 		if(cmd.hasOption("master")) {
 			MASTER_CONFIG_FILE = cmd.getOptionValue("master",null);
