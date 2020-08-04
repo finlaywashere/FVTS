@@ -43,7 +43,7 @@ task downloadOpenCv() {
             rename 'opencv(.+)', 'opencv.zip'
             into depFolder
         }
-	/*copy {
+	copy {
 	    from armCSCore
             rename 'cscore(.+)', 'cscore.zip'
             into depFolder
@@ -57,7 +57,7 @@ task downloadOpenCv() {
             from armWPIUtil
             rename 'wpiutil(.+)', 'wpiutil.zip'
             into depFolder
-        }*/
+        }
     }
 }
 task tdownloadOpenCv() {
@@ -95,7 +95,7 @@ task tdownloadOpenCv() {
             rename 'opencv(.+)', 'opencv.zip'
             into depFolder
         }
-        /*copy {
+        copy {
             from armCSCore
             rename 'cscore(.+)', 'cscore.zip'
             into depFolder
@@ -109,7 +109,7 @@ task tdownloadOpenCv() {
             from armWPIUtil
             rename 'wpiutil(.+)', 'wpiutil.zip'
             into depFolder
-        }*/
+        }
 
     }
 }
@@ -122,7 +122,7 @@ task unzipOpenCv(type: Copy) {
     group = 'WPILib'
     dependsOn downloadOpenCv
 
-    from zipTree("$buildDir/dependencies/opencv.zip")//, zipTree("$buildDir/dependencies/cscore.zip"), zipTree("$buildDir/dependencies/ntcore.zip"), zipTree("$buildDir/dependencies/wpiutil.zip")
+    from zipTree("$buildDir/dependencies/opencv.zip"), zipTree("$buildDir/dependencies/cscore.zip"), zipTree("$buildDir/dependencies/ntcore.zip"), zipTree("$buildDir/dependencies/wpiutil.zip")
     into openCvUnzipLocation
 }
 
@@ -134,7 +134,7 @@ task tunzipOpenCv(type: Copy) {
     group = 'WPILib'
     dependsOn tdownloadOpenCv
 
-    from zipTree("$buildDir/dependencies/opencv.zip")//, zipTree("$buildDir/dependencies/cscore.zip"), zipTree("$buildDir/dependencies/ntcore.zip"), zipTree("$buildDir/dependencies/wpiutil.zip")
+    from zipTree("$buildDir/dependencies/opencv.zip"), zipTree("$buildDir/dependencies/cscore.zip"), zipTree("$buildDir/dependencies/ntcore.zip"), zipTree("$buildDir/dependencies/wpiutil.zip")
     into topenCvUnzipLocation
 }
 
