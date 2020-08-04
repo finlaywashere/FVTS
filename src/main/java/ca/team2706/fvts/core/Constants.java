@@ -4,6 +4,8 @@ import java.io.File;
 
 public class Constants {
 	public static final String OPENCV_LIBRARY = "opencv_java347";
+	public static final String NTCORE_LIBRARY = "ntcorejni";
+	public static final String CSCORE_LIBRARY = "cscorejni";
 	public static final int MAJOR_VERSION = 1;
 	public static final int MINOR_VERSION = 2;
 	public static final String AUTHOR = "Merge Robotics";
@@ -21,6 +23,9 @@ public class Constants {
 		String arch = System.getProperty("os.arch");
 		String lpath = System.getProperty("java.library.path");
 		String path = "";
+		Log.d("OS: "+os, true);
+		Log.d("Arch: "+arch, true);
+		Log.d("Path: "+lpath,true);
 		if(os.toLowerCase().contains("windows")) {
 			if(arch.contains("64")) {
 				path = "windows/x86_64/"+OPENCV_LIBRARY+".dll";
@@ -42,8 +47,10 @@ public class Constants {
 		String[] paths = lpath.split(":");
 		for(String s : paths) {
 			File f = new File(s,path);
-			if(f.exists())
-				return f.getPath();
+			if(f.exists()) {
+				Log.d("OpenCV Path: "+f.getAbsolutePath(), true);
+				return f.getAbsolutePath();
+			}
 		}
 		throw new RuntimeException("Could not find OpenCV!!!");
 	}

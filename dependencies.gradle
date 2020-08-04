@@ -1,94 +1,8 @@
-ext.ntcoreDep = { ->
-    /*def classifier
-    if (buildType == "windows") {
-        classifier = "windows2015"
-    } else if (buildType == "linux") {
-        classifier = "desktop"
-    } else if(buildType == "linux-x86_64"){
-	classifier = "desktop"
-    } else if(buildType == "linux-x86"){
-    	classifier = "desktop"
-    } else {
-        classifier = buildType
-    }*/
-    return "edu.wpi.first.ntcore:ntcore-java:+"
-}
-ext.tntcoreDep = { ->
-    /*def classifier
-    if (testType == "windows") {
-        classifier = "windows2015"
-    } else if (testType == "linux") {
-        classifier = "desktop"
-    } else if(testType == "linux-x86_64"){
-        classifier = "desktop"
-    } else if(testType == "linux-x86"){
-        classifier = "desktop"
-    } else {
-        classifier = testType
-    }*/
-    return "edu.wpi.first.ntcore:ntcore-java:+"
-}
-
-ext.cscoreDep = { ->
-/*	def classifier
-	
-	if(buildType == "linux-x86_64" || buildType == "linux-x86"){
-		classifier = "linux";
-	}else if(buildType == "windows"){
-		classifier = "windows2015";
-	}else{
-		classifier = buildType;
-	}*/
-    return "edu.wpi.first.cscore:cscore-java:+";
-}
-
-ext.tcscoreDep = { ->
-	/*def classifier
-	
-	if(testType == "linux-x86_64" || testType == "linux-x86"){
-		classifier = "linux";
-	}else if(testType == "windows"){
-		classifier = "windows2015";
-	}else{
-		classifier = testType;
-	}*/
-    return "edu.wpi.first.cscore:cscore-java:+";
-}
 ext.getOpenCvPlatformPackage = { ->
-  /*if (buildType.startsWith("windows")) {
-    if (System.getProperty("os.arch").equals("amd64")) {
-      return "windowsx86-64"
-    } else {
-      return "windowsx86"
-    }
-  } else if (buildType.startsWith("linux")) {
-    if (System.getProperty("os.arch").equals("amd64")) {
-      return "linuxx86-64"
-    }
-  } else if (buildType.startsWith("arm-raspbian")) {
-    return "linuxraspbian"
-  } else {
-    return buildType
-  }*/
   return buildType
 }
 
 ext.tgetOpenCvPlatformPackage = { ->
-  /*if (testType.startsWith("windows")) {
-    if (System.getProperty("os.arch").equals("amd64")) {
-      return "windowsx86-64"
-    } else {
-      return "windowsx86"
-    }
-  } else if (testType.equals("linux")) {
-    if (System.getProperty("os.arch").equals("amd64")) {
-      return "linuxx86-64"
-    }
-  } else if (testType.equals("arm-raspbian")) {
-    return "linuxraspbian"
-  } else {
-    return testType
-  }*/
   return testType
 }
 
@@ -97,9 +11,9 @@ task downloadOpenCv() {
     description = 'Downloads the OpenCV Native maven dependency.'
     group = 'WPILib'
     def depFolder = "$buildDir/dependencies"
-    def cvZip = file("$depFolder/opencv.zip")
-    outputs.file(cvZip)
     def armOpenCv
+    def armNTCore
+    def armCSCore
 
     doFirst {
         def classifier = getOpenCvPlatformPackage()
@@ -107,6 +21,15 @@ task downloadOpenCv() {
         def armOpenCvConfig = project.configurations.detachedConfiguration(armOpenCvDependency)
         armOpenCvConfig.setTransitive(false)
         armOpenCv = armOpenCvConfig.files[0].canonicalFile
+        def armCSCoreDep = project.dependencies.create("edu.wpi.first.cscore:cscore-jni:2020.3.2:$classifier@jar")
+        def armCSCoreConfig = project.configurations.detachedConfiguration(armCSCoreDep)
+        armCSCoreConfig.setTransitive(false)
+        armCSCore = armCSCoreConfig.files[0].canonicalFile
+	def armNTCoreDep = project.dependencies.create("edu.wpi.first.ntcore:ntcore-jni:2020.3.2:$classifier@jar")
+        def armNTCoreConfig = project.configurations.detachedConfiguration(armNTCoreDep)
+        armNTCoreConfig.setTransitive(false)
+        armNTCore = armNTCoreConfig.files[0].canonicalFile
+
     }
 
     doLast {
@@ -115,22 +38,41 @@ task downloadOpenCv() {
             rename 'opencv(.+)', 'opencv.zip'
             into depFolder
         }
+	copy {
+	    from armCSCore
+            rename 'cscore(.+)', 'cscore.zip'
+            into depFolder
+	}
+	copy {
+            from armNTCore
+            rename 'ntcore(.+)', 'ntcore.zip'
+            into depFolder
+        }
+
     }
 }
 task tdownloadOpenCv() {
     description = 'Downloads the OpenCV Native maven dependency.'
     group = 'WPILib'
     def depFolder = "$buildDir/dependencies"
-    def cvZip = file("$depFolder/opencv.zip")
-    outputs.file(cvZip)
     def armOpenCv
-
+    def armCSCore
+    def armNTCore
     doFirst {
         def classifier = tgetOpenCvPlatformPackage()
         def armOpenCvDependency = project.dependencies.create("edu.wpi.first.thirdparty.frc2020.opencv:opencv-jni:3.4.7-2:$classifier@jar")
         def armOpenCvConfig = project.configurations.detachedConfiguration(armOpenCvDependency)
         armOpenCvConfig.setTransitive(false)
         armOpenCv = armOpenCvConfig.files[0].canonicalFile
+	def armCSCoreDep = project.dependencies.create("edu.wpi.first.cscore:cscore-jni:2020.3.2:$classifier@jar")
+        def armCSCoreConfig = project.configurations.detachedConfiguration(armCSCoreDep)
+        armCSCoreConfig.setTransitive(false)
+        armCSCore = armCSCoreConfig.files[0].canonicalFile
+        def armNTCoreDep = project.dependencies.create("edu.wpi.first.ntcore:ntcore-jni:2020.3.2:$classifier@jar")
+        def armNTCoreConfig = project.configurations.detachedConfiguration(armNTCoreDep)
+        armNTCoreConfig.setTransitive(false)
+        armNTCore = armNTCoreConfig.files[0].canonicalFile
+
     }
 
     doLast {
@@ -139,6 +81,17 @@ task tdownloadOpenCv() {
             rename 'opencv(.+)', 'opencv.zip'
             into depFolder
         }
+        copy {
+            from armCSCore
+            rename 'cscore(.+)', 'cscore.zip'
+            into depFolder
+        }
+        copy {
+            from armNTCore
+            rename 'ntcore(.+)', 'ntcore.zip'
+            into depFolder
+        }
+
     }
 }
 
@@ -150,7 +103,7 @@ task unzipOpenCv(type: Copy) {
     group = 'WPILib'
     dependsOn downloadOpenCv
 
-    from zipTree(downloadOpenCv.outputs.files.singleFile)
+    from zipTree("$buildDir/dependencies/opencv.zip"), zipTree("$buildDir/dependencies/cscore.zip"), zipTree("$buildDir/dependencies/ntcore.zip")
     into openCvUnzipLocation
 }
 
@@ -162,7 +115,7 @@ task tunzipOpenCv(type: Copy) {
     group = 'WPILib'
     dependsOn tdownloadOpenCv
 
-    from zipTree(downloadOpenCv.outputs.files.singleFile)
+    from zipTree("$buildDir/dependencies/opencv.zip"), zipTree("$buildDir/dependencies/cscore.zip"), zipTree("$buildDir/dependencies/ntcore.zip")
     into topenCvUnzipLocation
 }
 
