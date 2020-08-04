@@ -4,9 +4,6 @@ import java.io.File;
 
 public class LibraryLoader {
 	public static final String OPENCV_LIBRARY = "opencv_java347";
-	public static final String NTCORE_LIBRARY = "ntcorejni";
-	public static final String CSCORE_LIBRARY = "cscorejni";
-	public static final String WPIUTIL_LIBRARY = "wpiutiljni";
 	
 	public static final void findAndLoadOpenCV(String overrideOpenCV) {
 		if(overrideOpenCV != null) {
@@ -17,12 +14,14 @@ public class LibraryLoader {
 		String arch = System.getProperty("os.arch");
 		String lpath = System.getProperty("java.library.path");
 		String path = "";
+		String path2 = "";
 		if(os.toLowerCase().contains("windows")) {
 			if(arch.contains("64")) {
 				path = "windows/x86_64/"+OPENCV_LIBRARY+".dll";
 			}else {
 				path = "windows/x86/"+OPENCV_LIBRARY+".dll";
 			}
+			path2 = OPENCV_LIBRARY+".dll";
 		}
 		if(os.toLowerCase().contains("linux")) {
 			if(arch.toLowerCase().contains("arm")) {
@@ -32,6 +31,7 @@ public class LibraryLoader {
 			}else {
 				path = "linux/x86-64/lib"+OPENCV_LIBRARY+".so";
 			}
+			path2 = "lib"+OPENCV_LIBRARY+".so";
 		}
 		if(path.isEmpty())
 			throw new RuntimeException("Could not find OpenCV!!!");
@@ -40,8 +40,11 @@ public class LibraryLoader {
 			File f = new File(s,path);
 			if(f.exists()) {
 				System.load(f.getAbsolutePath());
-				System.out.println(f.getParentFile().getAbsolutePath());
-				System.setProperty("java.library.path", f.getParentFile().getAbsolutePath()+":"+lpath);
+				return;
+			}
+			File f2 = new File(s,path2);
+			if(f2.exists()) {
+				System.load(f2.getAbsolutePath());
 				return;
 			}
 		}
