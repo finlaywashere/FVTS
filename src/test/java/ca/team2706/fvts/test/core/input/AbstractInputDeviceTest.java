@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+import ca.team2706.fvts.core.LibraryLoader;
 import ca.team2706.fvts.core.input.AbstractInputDevice;
 import ca.team2706.fvts.core.input.DummyInputDevice;
 import ca.team2706.fvts.core.input.USBCameraInputDevice;
@@ -12,6 +13,7 @@ public class AbstractInputDeviceTest {
 
 	@Test
 	public void abstractInputDeviceTest() {
+		LibraryLoader.loadLibraries();
 		AbstractInputDevice device1 = AbstractInputDevice.getByName("dummy");
 		AbstractInputDevice device2 = AbstractInputDevice.getByName("usb");
 		if(!(device1 instanceof DummyInputDevice))
