@@ -7,6 +7,7 @@ public class LibraryLoader {
 	
 	public static final void findAndLoadOpenCV(String overrideOpenCV) {
 		if(overrideOpenCV != null) {
+			Log.d("Loading OpenCV from "+new File(overrideOpenCV).getAbsolutePath(), true);
 			System.load(new File(overrideOpenCV).getAbsolutePath());
 			return;
 		}
@@ -39,11 +40,13 @@ public class LibraryLoader {
 		for(String s : paths) {
 			File f = new File(s,path);
 			if(f.exists()) {
+				Log.d("Loading OpenCV from "+f.getAbsolutePath(), true);
 				System.load(f.getAbsolutePath());
 				return;
 			}
 			File f2 = new File(s,path2);
 			if(f2.exists()) {
+				Log.d("Loading OpenCV from "+f.getAbsolutePath(), true);
 				System.load(f2.getAbsolutePath());
 				return;
 			}
