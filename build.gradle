@@ -80,7 +80,7 @@ repositories {
 dependencies {
   compile 'edu.wpi.first.wpiutil:wpiutil-java:2020.3.2'
   compile 'edu.wpi.first.ntcore:ntcore-java:2020.3.2'
-  compile 'edu.wpi.first.cscore:cscore-java:2020.3.2'
+//  compile 'edu.wpi.first.cscore:cscore-java:2020.3.2'
   compile 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-java:3.4.7-2'
   compile 'edu.wpi.first.cameraserver:cameraserver-java:+:'
   compile 'edu.wpi.first.wpilibj:wpilibj-java:+'
@@ -95,7 +95,7 @@ dependencies {
   testCompile 'edu.wpi.first.cameraserver:cameraserver-java:+:'
   testCompile 'edu.wpi.first.wpilibj:wpilibj-java:+'
   testCompile 'junit:junit:4.12'
-  testCompile 'edu.wpi.first.cscore:cscore-java:2020.3.2'
+//  testCompile 'edu.wpi.first.cscore:cscore-java:2020.3.2'
   testCompile group: 'commons-cli', name: 'commons-cli', version: '1.4'
   testCompile 'org.apache.commons:commons-csv:1.7'
   testCompile 'jfree:jfreechart:1.0.13'

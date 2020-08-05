@@ -22,18 +22,18 @@ task downloadOpenCv() {
         def armOpenCvConfig = project.configurations.detachedConfiguration(armOpenCvDependency)
         armOpenCvConfig.setTransitive(false)
         armOpenCv = armOpenCvConfig.files[0].canonicalFile
-        def armCSCoreDep = project.dependencies.create("edu.wpi.first.cscore:cscore-jni:2020.3.2:$classifier@jar")
-        def armCSCoreConfig = project.configurations.detachedConfiguration(armCSCoreDep)
-        armCSCoreConfig.setTransitive(false)
-        armCSCore = armCSCoreConfig.files[0].canonicalFile
+        //def armCSCoreDep = project.dependencies.create("edu.wpi.first.cscore:cscore-jni:2020.3.2:$classifier@jar")
+        //def armCSCoreConfig = project.configurations.detachedConfiguration(armCSCoreDep)
+        //armCSCoreConfig.setTransitive(false)
+        //armCSCore = armCSCoreConfig.files[0].canonicalFile
 	def armNTCoreDep = project.dependencies.create("edu.wpi.first.ntcore:ntcore-jni:2020.3.2:$classifier@jar")
         def armNTCoreConfig = project.configurations.detachedConfiguration(armNTCoreDep)
         armNTCoreConfig.setTransitive(false)
         armNTCore = armNTCoreConfig.files[0].canonicalFile
-	def armWPIUtilDep = project.dependencies.create("edu.wpi.first.wpiutil:wpiutil-jni:2020.3.2:$classifier@jar")
-        def armWPIUtilConfig = project.configurations.detachedConfiguration(armWPIUtilDep)
-        armWPIUtilConfig.setTransitive(false)
-        armWPIUtil = armWPIUtilConfig.files[0].canonicalFile
+	//def armWPIUtilDep = project.dependencies.create("edu.wpi.first.wpiutil:wpiutil-jni:2020.3.2:$classifier@jar")
+        //def armWPIUtilConfig = project.configurations.detachedConfiguration(armWPIUtilDep)
+        //armWPIUtilConfig.setTransitive(false)
+        //armWPIUtil = armWPIUtilConfig.files[0].canonicalFile
 
     }
 
@@ -43,21 +43,21 @@ task downloadOpenCv() {
             rename 'opencv(.+)', 'opencv.zip'
             into depFolder
         }
-	copy {
+	/*copy {
 	    from armCSCore
             rename 'cscore(.+)', 'cscore.zip'
             into depFolder
-	}
+	}*/
 	copy {
             from armNTCore
             rename 'ntcore(.+)', 'ntcore.zip'
             into depFolder
         }
-        copy {
+        /*copy {
             from armWPIUtil
             rename 'wpiutil(.+)', 'wpiutil.zip'
             into depFolder
-        }
+        }*/
     }
 }
 task tdownloadOpenCv() {
@@ -74,18 +74,18 @@ task tdownloadOpenCv() {
         def armOpenCvConfig = project.configurations.detachedConfiguration(armOpenCvDependency)
         armOpenCvConfig.setTransitive(false)
         armOpenCv = armOpenCvConfig.files[0].canonicalFile
-	def armCSCoreDep = project.dependencies.create("edu.wpi.first.cscore:cscore-jni:2020.3.2:$classifier@jar")
-        def armCSCoreConfig = project.configurations.detachedConfiguration(armCSCoreDep)
-        armCSCoreConfig.setTransitive(false)
-        armCSCore = armCSCoreConfig.files[0].canonicalFile
+	//def armCSCoreDep = project.dependencies.create("edu.wpi.first.cscore:cscore-jni:2020.3.2:$classifier@jar")
+        //def armCSCoreConfig = project.configurations.detachedConfiguration(armCSCoreDep)
+        //armCSCoreConfig.setTransitive(false)
+        //armCSCore = armCSCoreConfig.files[0].canonicalFile
         def armNTCoreDep = project.dependencies.create("edu.wpi.first.ntcore:ntcore-jni:2020.3.2:$classifier@jar")
         def armNTCoreConfig = project.configurations.detachedConfiguration(armNTCoreDep)
         armNTCoreConfig.setTransitive(false)
         armNTCore = armNTCoreConfig.files[0].canonicalFile
-	def armWPIUtilDep = project.dependencies.create("edu.wpi.first.wpiutil:wpiutil-jni:2020.3.2:$classifier@jar")
-        def armWPIUtilConfig = project.configurations.detachedConfiguration(armWPIUtilDep)
-        armWPIUtilConfig.setTransitive(false)
-        armWPIUtil = armWPIUtilConfig.files[0].canonicalFile
+	//def armWPIUtilDep = project.dependencies.create("edu.wpi.first.wpiutil:wpiutil-jni:2020.3.2:$classifier@jar")
+        //def armWPIUtilConfig = project.configurations.detachedConfiguration(armWPIUtilDep)
+        //armWPIUtilConfig.setTransitive(false)
+        //armWPIUtil = armWPIUtilConfig.files[0].canonicalFile
 
     }
 
@@ -95,21 +95,21 @@ task tdownloadOpenCv() {
             rename 'opencv(.+)', 'opencv.zip'
             into depFolder
         }
-        copy {
+        /*copy {
             from armCSCore
             rename 'cscore(.+)', 'cscore.zip'
             into depFolder
-        }
+        }*/
         copy {
             from armNTCore
             rename 'ntcore(.+)', 'ntcore.zip'
             into depFolder
         }
-	copy {
+	/*copy {
             from armWPIUtil
             rename 'wpiutil(.+)', 'wpiutil.zip'
             into depFolder
-        }
+        }*/
 
     }
 }
@@ -122,7 +122,7 @@ task unzipOpenCv(type: Copy) {
     group = 'WPILib'
     dependsOn downloadOpenCv
 
-    from zipTree("$buildDir/dependencies/opencv.zip"), zipTree("$buildDir/dependencies/cscore.zip"), zipTree("$buildDir/dependencies/ntcore.zip"), zipTree("$buildDir/dependencies/wpiutil.zip")
+    from zipTree("$buildDir/dependencies/opencv.zip"),zipTree("$buildDir/dependencies/ntcore.zip")//, zipTree("$buildDir/dependencies/cscore.zip"), zipTree("$buildDir/dependencies/wpiutil.zip")
     into openCvUnzipLocation
 }
 
@@ -134,7 +134,7 @@ task tunzipOpenCv(type: Copy) {
     group = 'WPILib'
     dependsOn tdownloadOpenCv
 
-    from zipTree("$buildDir/dependencies/opencv.zip"), zipTree("$buildDir/dependencies/cscore.zip"), zipTree("$buildDir/dependencies/ntcore.zip"), zipTree("$buildDir/dependencies/wpiutil.zip")
+    from zipTree("$buildDir/dependencies/opencv.zip"), zipTree("$buildDir/dependencies/ntcore.zip")//,zipTree("$buildDir/dependencies/cscore.zip"), zipTree("$buildDir/dependencies/wpiutil.zip")
     into topenCvUnzipLocation
 }
 
