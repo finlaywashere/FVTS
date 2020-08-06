@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import ca.team2706.fvts.core.Constants;
+import ca.team2706.fvts.core.LibraryLoader;
 import ca.team2706.fvts.core.MainThread;
 import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.interfaces.AbstractInterface;
@@ -22,7 +22,7 @@ public class DummyInterfaceTest {
 	public void dummyInterfaceTest() throws Exception {
 		// Must be included!
 		// Loads OpenCV
-		System.load(Constants.OPENCV());
+		LibraryLoader.loadLibraries();
 		List<Attribute> attribs = new ArrayList<Attribute>();
 		attribs.add(new Attribute("core/interface", "dummy"));
 		attribs.add(new Attribute("core/pipeline", "dummy"));

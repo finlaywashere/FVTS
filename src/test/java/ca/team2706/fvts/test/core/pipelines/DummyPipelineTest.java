@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.opencv.core.Mat;
 
-import ca.team2706.fvts.core.Constants;
+import ca.team2706.fvts.core.LibraryLoader;
 import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.params.Attribute;
 import ca.team2706.fvts.core.params.AttributeOptions;
@@ -20,7 +20,7 @@ public class DummyPipelineTest {
 	public void dummyPipelineTest() throws Exception {
 		// Must be included!
 		// Loads OpenCV
-		System.load(Constants.OPENCV());
+		LibraryLoader.loadLibraries();
 		Mat src = new Mat();
 		VisionParams params = new VisionParams(new ArrayList<Attribute>(), new ArrayList<AttributeOptions>());
 		DummyPipeline pipeline = new DummyPipeline();

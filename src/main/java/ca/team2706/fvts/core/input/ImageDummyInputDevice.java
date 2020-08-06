@@ -1,5 +1,7 @@
 package ca.team2706.fvts.core.input;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,9 +18,14 @@ public class ImageDummyInputDevice extends AbstractInputDevice{
 	@Override
 	public void init(String identifier) throws Exception{
 		if(!frames.containsKey(identifier)) {
+			if(!new File(identifier).exists()) {
+				throw new FileNotFoundException("Failed to find image file "+identifier);
+			}
 			VideoCapture capture = new VideoCapture(identifier);
 			Mat frame = new Mat();
-			capture.read(frame);
+			if(!capture.read(frame)) {
+				throw new Exception("Failed to open image file "+identifier);
+			}
 			frames.put(identifier, frame);
 		}
 	}

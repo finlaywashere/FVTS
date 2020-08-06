@@ -1,6 +1,6 @@
 package ca.team2706.fvts.main;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -12,17 +12,18 @@ import ca.team2706.fvts.core.params.VisionParams;
 public class ConfigTester {
 	public static void main(String[] args) throws Exception{
 		System.out.println("FVTS Configuration Tester "+Constants.VERSION_STRING+" developed by "+Constants.AUTHOR);
-		Main.visionParamsFile = new File("visionParams.properties");
+		Main.visionParamsFile = "visionParams.properties";
 		
+		List<String> lines = ConfigParser.readLines(new FileInputStream(Main.MASTER_CONFIG_FILE));
 		// Check if allowOverride is enabled
-		Map<String, String> masterConfig = ConfigParser.getPropertiesM(Main.MASTER_CONFIG_FILE, "config");
+		Map<String, String> masterConfig = ConfigParser.getPropertiesM(lines, "config");
 		
 		boolean allowOverride = Boolean.valueOf(masterConfig.get("allowOverride"));
 		if(allowOverride)
 			System.out.println("Warn: Remote override is enabled!!!");
 		
 		// Check to make sure all the profiles are enabled
-		Map<String, String> masterEnabled = ConfigParser.getPropertiesM(Main.MASTER_CONFIG_FILE, "enabled");
+		Map<String, String> masterEnabled = ConfigParser.getPropertiesM(lines, "enabled");
 		
 		for(String s : masterEnabled.keySet()) {
 			boolean b = Boolean.valueOf(masterEnabled.get(s));
@@ -31,7 +32,7 @@ public class ConfigTester {
 		}
 		
 		// Check all the vision parameters for obvious errors
-		List<VisionParams> params = Utils.loadVisionParams();
+		List<VisionParams> params = new Utils().loadVisionParams();
 		for(VisionParams p : params) {
 			String name = p.getByName("name").getValue();
 			if(p.getByName("type").getValue().equals("usb")) {

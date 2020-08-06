@@ -1,6 +1,7 @@
 package ca.team2706.fvts.main;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.apache.commons.cli.Options;
 import ca.team2706.fvts.core.ConfigParser;
 import ca.team2706.fvts.core.Constants;
 import ca.team2706.fvts.core.ImageDumpScheduler;
+import ca.team2706.fvts.core.LibraryLoader;
 import ca.team2706.fvts.core.Log;
 import ca.team2706.fvts.core.MainThread;
 import ca.team2706.fvts.core.NetworkTablesManager;
@@ -22,29 +24,29 @@ import ca.team2706.fvts.core.Utils;
 import ca.team2706.fvts.core.VisionCameraServer;
 import ca.team2706.fvts.core.params.Attribute;
 import ca.team2706.fvts.core.params.VisionParams;
-
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 @SuppressWarnings("deprecation")
 public class Main {
 
-	public static final File MASTER_CONFIG_FILE = new File("master.cf");
+	public static String MASTER_CONFIG_FILE = "master.cf";
 
 	public static String filename = "";
 	public static int timestamp = 0;
 	public static File timestampfile;
 	public static NetworkTable loggingTable;
-	public static File visionParamsFile;
+	public static String visionParamsFile = "visionParams.properties";
 	public static boolean developmentMode = false;
 	public static boolean pubAll = false;
 	public static int runID;
 	public static String serverIp = "";
+	public static CommandLine cmd = null;
 
 	public static List<MainThread> threads = new ArrayList<MainThread>();
 
 	public static void reloadConfig() {
 		visionParamsList.clear();
-		Utils.loadVisionParams();
+		new Utils().loadVisionParams();
 		for (MainThread thread : threads) {
 			String name = thread.visionParams.getByName("name").getValue();
 			boolean found = false;
@@ -68,20 +70,8 @@ public class Main {
 	public static List<VisionParams> visionParamsList = new ArrayList<VisionParams>();
 
 	public static boolean b = true;
-
-	/**
-	 * The main method! Very important Do not delete! :] :]
-	 *
-	 * @param args The command line arguments
-	 * @throws Exception If the configs fail to load
-	 */
-
-	public static void main(String[] args) throws Exception {
+	public Main(String[] args) throws Exception{
 		System.out.println("FVTS Main " + Constants.VERSION_STRING + " developed by " + Constants.AUTHOR);
-
-		// Must be included!
-		// Loads OpenCV
-		System.load(Constants.OPENCV());
 
 		Options options = new Options();
 
@@ -91,10 +81,14 @@ public class Main {
 		options.addOption(developmentMode);
 		Option configFile = new Option("conf", "config", true, "Specifies an alternative config file");
 		options.addOption(configFile);
-
+		Option masterFile = new Option("mast", "master", true, "Specifies an alternative master config file");
+		options.addOption(masterFile);
+		Option openCVOverride = new Option("cv","opencv", true, "Specifies an alternative OpenCV binary file");
+		options.addOption(openCVOverride);
+		
 		CommandLineParser parser = new DefaultParser();
 		HelpFormatter formatter = new HelpFormatter();
-		CommandLine cmd = null;
+		cmd = null;
 		try {
 			cmd = parser.parse(options, args);
 		} catch (Exception e) {
@@ -103,22 +97,39 @@ public class Main {
 			System.exit(1);
 		}
 		Main.developmentMode = cmd.hasOption("development");
+		
+		// Must be included!
+		// Loads OpenCV
+		LibraryLoader.loadLibraries(cmd.getOptionValue("opencv", null));
+		
+		if(cmd.hasOption("master")) {
+			MASTER_CONFIG_FILE = cmd.getOptionValue("master",null);
+		}
 
 		// Connect NetworkTables, and get access to the publishing table
 		serverIp = cmd.getOptionValue("ip", "");
 
-		visionParamsFile = new File(cmd.getOptionValue("config", "visionParams.properties"));
+		visionParamsFile = cmd.getOptionValue("config", "visionParams.properties");
 
 		// read the vision calibration values from file.
-		visionParamsList = Utils.loadVisionParams();
+		visionParamsList = new Utils().loadVisionParams();
 
-		Map<String, String> masterConfig = ConfigParser.getPropertiesM(MASTER_CONFIG_FILE, "config");
-		
+		Map<String, String> masterConfig;
+		Map<String, String> masterEnabled;
+		if(MASTER_CONFIG_FILE.equalsIgnoreCase("fallback")) {
+			List<String> lines = ConfigParser.readLines(getClass().getResourceAsStream("master.cf"));
+			masterConfig = ConfigParser.getPropertiesM(lines, "config");
+			masterEnabled = ConfigParser.getPropertiesM(lines, "enabled");
+		}else {
+			List<String> lines = ConfigParser.readLines(new FileInputStream(MASTER_CONFIG_FILE));
+			masterConfig = ConfigParser.getPropertiesM(lines, "config");
+			masterEnabled = ConfigParser.getPropertiesM(lines, "enabled");
+		}
 		if(masterConfig.containsKey("pubAll")) {
 			pubAll = Boolean.valueOf(masterConfig.get("pubAll"));
 		}
 
-		Map<String, String> masterEnabled = ConfigParser.getPropertiesM(MASTER_CONFIG_FILE, "enabled");
+		
 
 		// Go through and enable the configs
 		for (String s : masterEnabled.keySet()) {
@@ -170,5 +181,16 @@ public class Main {
 
 		if (allowOverrideB)
 			NetworkTablesManager.init();
+	}
+
+	/**
+	 * The main method! Very important Do not delete! :] :]
+	 *
+	 * @param args The command line arguments
+	 * @throws Exception If the configs fail to load
+	 */
+
+	public static void main(String[] args) throws Exception {
+		new Main(args);
 	}
 }

@@ -78,8 +78,9 @@ repositories {
 }
 
 dependencies {
+  compile 'edu.wpi.first.wpiutil:wpiutil-java:2020.3.2'
   compile 'edu.wpi.first.ntcore:ntcore-java:2020.3.2'
-  compile 'edu.wpi.first.cscore:cscore-java:2020.3.2'
+//  compile 'edu.wpi.first.cscore:cscore-java:2020.3.2'
   compile 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-java:3.4.7-2'
   compile 'edu.wpi.first.cameraserver:cameraserver-java:+:'
   compile 'edu.wpi.first.wpilibj:wpilibj-java:+'
@@ -88,12 +89,13 @@ dependencies {
   compile 'org.apache.commons:commons-csv:1.7'
   compile 'jfree:jfreechart:1.0.13'
   
+  testCompile 'edu.wpi.first.wpiutil:wpiutil-java:2020.3.2'
   testCompile 'edu.wpi.first.ntcore:ntcore-java:2020.3.2'
   testCompile 'edu.wpi.first.thirdparty.frc2020.opencv:opencv-java:3.4.7-2'
   testCompile 'edu.wpi.first.cameraserver:cameraserver-java:+:'
   testCompile 'edu.wpi.first.wpilibj:wpilibj-java:+'
   testCompile 'junit:junit:4.12'
-  testCompile 'edu.wpi.first.cscore:cscore-java:2020.3.2'
+//  testCompile 'edu.wpi.first.cscore:cscore-java:2020.3.2'
   testCompile group: 'commons-cli', name: 'commons-cli', version: '1.4'
   testCompile 'org.apache.commons:commons-csv:1.7'
   testCompile 'jfree:jfreechart:1.0.13'
@@ -106,6 +108,11 @@ jar {
 
 shadowJar {
   baseName = projectName
+  //include("${project.rootDir}/master.cf", "${project.rootDir}/visionParams.properties")
+  from('${project.rootDir}') {
+    include 'master.cf'
+    include 'visionParams.properties'
+  }
 }
 task libraryJar(type: ShadowJar){
 	classifier = "lib"
@@ -140,16 +147,22 @@ task writeExecuteScript() {
 }
 
 task copyToOutput(type: Copy) {
+  dependsOn setbuildType
   dependsOn shadowJar
   dependsOn unzipOpenCv
   dependsOn writeExecuteScript
   destinationDir = outputDirectory
   from (file(shadowJar.archivePath)) {
   }
-  from (openCvUnzipLocation) {
-    exclude 'META-INF'
-    exclude '**/MANIFEST.MF'
-  }
+  if(project.buildType == "windowsx86-64"){
+    from ("$openCvUnzipLocation/windows/"+project.buildType.substring(7)) {
+      exclude '*.hash'
+    }
+  }else{
+    from ("$openCvUnzipLocation/linux/"+project.buildType.substring(5)) {
+      exclude '*.hash'
+    }
+  } 
   from (file("${buildDir}/run${projectName}.bat")) {
   }
   from (file("${buildDir}/run${projectName}")) {

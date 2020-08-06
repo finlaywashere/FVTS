@@ -5,12 +5,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.opencv.core.Mat;
 
+import ca.team2706.fvts.core.LibraryLoader;
 import ca.team2706.fvts.core.input.DummyInputDevice;
 
 public class DummyInputDeviceTest {
 
 	@Test
 	public void dummyInputDeviceTest() {
+		LibraryLoader.loadLibraries();
 		DummyInputDevice device = new DummyInputDevice();
 		Mat frame = device.getFrame("test");
 		assertTrue(frame.empty());

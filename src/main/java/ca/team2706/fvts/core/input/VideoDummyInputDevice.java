@@ -35,8 +35,6 @@ public class VideoDummyInputDevice extends AbstractInputDevice{
 				e.printStackTrace();
 			}
 		}
-		
-		Log.i("Video successfully opened",true);
 
 		if(!capture.read(frame)) {
 			
@@ -44,6 +42,9 @@ public class VideoDummyInputDevice extends AbstractInputDevice{
 			
 			System.exit(1);
 		}
+		
+		Log.i("Video successfully opened",true);
+		
 		videos.put(identifier, capture);
 	}
 
