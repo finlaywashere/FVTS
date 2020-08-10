@@ -70,7 +70,10 @@ public class NetworkTablesInterface extends AbstractInterface {
 
 	@Override
 	public List<AttributeOptions> getOptions() {
-		return new ArrayList<AttributeOptions>();
+		List<AttributeOptions> ret = new ArrayList<AttributeOptions>();
+		ret.add(new AttributeOptions(getName()+"/teamNumber",true));
+		
+		return ret;
 	}
 
 	private boolean setup = false;
@@ -101,7 +104,7 @@ public class NetworkTablesInterface extends AbstractInterface {
 			if (!use_GUI && Main.serverIp.equals("")) {
 
 				// Sets the team number
-				NetworkTable.setTeam(2706);
+				NetworkTable.setTeam(thread.getVisionParams().getByName(getName()+"/teamNumber").getValueI());
 
 			} else {
 
