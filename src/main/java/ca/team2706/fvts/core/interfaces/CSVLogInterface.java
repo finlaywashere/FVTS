@@ -20,7 +20,7 @@ public class CSVLogInterface extends AbstractInterface {
 
 	@Override
 	public void publishData(VisionData visionData, MainThread thread) {
-		if (System.currentTimeMillis() - elapsedTime.get(thread.getParamName()) > thread.getVisionParams()
+		if (((double)System.currentTimeMillis() - elapsedTime.get(thread.getParamName()))/1000 > thread.getVisionParams()
 				.getByName(getName() + "/csvLogTime").getValueD()) {
 			List<String> data = new ArrayList<String>();
 			File logFile = csvFiles.get(thread.getParamName());

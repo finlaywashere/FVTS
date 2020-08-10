@@ -25,7 +25,7 @@ public class ImageDumpInterface extends AbstractInterface {
 	@Override
 	public void publishData(VisionData data, MainThread thread) {
 		long lastTimeL = lastTime.get(thread.getParamName());
-		long elapsedTime = System.currentTimeMillis()-lastTimeL;
+		double elapsedTime = ((double)System.currentTimeMillis()-lastTimeL)/1000;
 		if(thread.useCamera && elapsedTime > thread.getVisionParams().getByName(getName()+"/imgDumpTime").getValueD()) {
 			lastTime.put(thread.getParamName(), System.currentTimeMillis());
 			try {
