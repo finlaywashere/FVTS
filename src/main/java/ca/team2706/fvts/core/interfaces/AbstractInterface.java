@@ -29,6 +29,8 @@ public abstract class AbstractInterface {
 			interfaces = new ArrayList<AbstractInterface>();
 			interfaces.add(new NetworkTablesInterface());
 			interfaces.add(new DummyInterface());
+			interfaces.add(new ImageDumpInterface());
+			interfaces.add(new CSVLogInterface());
 		}
 		for(AbstractInterface i : interfaces) {
 			if(i.getName().equalsIgnoreCase(name))

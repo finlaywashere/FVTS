@@ -3,7 +3,6 @@ package ca.team2706.fvts.core;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +28,17 @@ public class MainThread extends Thread {
 	public MainThread(VisionParams params) {
 		this.visionParams = params;
 		String interfaceN = visionParams.getByName("core/interface").getValue();
-		outputInterface = AbstractInterface.getByName(interfaceN);
-		if (outputInterface == null) {
-			Log.e("No interface found for profile " + visionParams.getByName("name").getValue(), true);
-			System.exit(1);
+		String[] interfaces = interfaceN.split(",");
+		outputInterface = new ArrayList<AbstractInterface>();
+		for(String s : interfaces) {
+			AbstractInterface i = AbstractInterface.getByName(interfaceN);
+			if (i == null) {
+				Log.e("Interface "+s+" does not exist in profile " + visionParams.getByName("name").getValue(), true);
+				System.exit(1);
+			}
+			i.init(this);
+			outputInterface.add(i);
 		}
-		outputInterface.init(this);
 
 		String pipelineN = visionParams.getByName("core/pipeline").getValue();
 		pipeline = AbstractPipeline.getByName(pipelineN);
@@ -81,16 +85,19 @@ public class MainThread extends Thread {
 		return visionParams;
 	}
 
-	public void setOutputInterface(AbstractInterface outputInterface) {
+	public void setOutputInterface(List<AbstractInterface> outputInterface) {
 		this.outputInterface = outputInterface;
 	}
 
+	public String getParamName() {
+		return visionParams.getByName("name").getValue();
+	}
+	
 	public Mat frame;
-	public double current_time_seconds;
 	public boolean useCamera;
 	public static int timestamp = 0;
 	public double lastDist = 0;
-	private AbstractInterface outputInterface;
+	private List<AbstractInterface> outputInterface;
 	private AbstractPipeline pipeline;
 	private List<AbstractMathProcessor> maths;
 	private List<AbstractImagePreprocessor> processors;
@@ -136,11 +143,6 @@ public class MainThread extends Thread {
 				error = true;
 			}
 		}
-		
-		File csvFile = new File(visionParams.getByName("core/csvLog").getValue().replaceAll("\\$1", "" + Main.runID));
-
-		long lastTime = System.currentTimeMillis();
-		boolean first = true;
 
 		Log.i("Initialized profile " + visionParams.getByName("name").getValue(), true);
 
@@ -207,8 +209,9 @@ public class MainThread extends Thread {
 
 				if (visionData.preferredTarget != null)
 					lastDist = (Double) visionData.preferredTarget.data.get("distance");
-
-				outputInterface.publishData(visionData, this);
+				for(AbstractInterface inf : outputInterface) {
+					inf.publishData(visionData, this);
+				}
 
 				// display the processed frame in the GUI
 				if (use_GUI) {
@@ -243,76 +246,11 @@ public class MainThread extends Thread {
 						continue;
 					}
 				}
-				if (useCamera) {
-					// log images to file once every seconds_between_img_dumps
-					double elapsedTime = ((double) System.currentTimeMillis() / 1000) - current_time_seconds;
-					// If the elapsed time is more that the seconds between image
-					// dumps
-
-					// then dump images asynchronously
-					if (elapsedTime >= visionParams.getByName("core/imgDumpTime").getValueD()
-							&& visionParams.getByName("core/imgDumpTime").getValueD() != -1) {
-						// Sets the current number of seconds
-						current_time_seconds = (((double) System.currentTimeMillis()) / 1000);
-						try {
-							Mat draw = frame.clone();
-							pipeline.drawPreferredTarget(draw, visionData);
-							Bundle b = new Bundle(Utils.matToBufferedImage(frame.clone()),
-									Utils.matToBufferedImage(visionData.binMask), Utils.matToBufferedImage(draw),
-									timestamp, visionParams);
-							ImageDumpScheduler.schedule(b);
-							timestamp++;
-						} catch (IOException e) {
-							Log.e(e.getMessage(), true);
-							error = true;
-							return;
-						}
-					}
-				}
-				if (csvFile.getParentFile().exists()) {
-					List<String> data = new ArrayList<String>();
-					if (first) {
-						data.add("Elapsed Time");
-						data.add("FPS");
-						data.add("Number of Targets");
-						data.add("Preffered Target X");
-						data.add("Preffered Target Y");
-						data.add("Preffered Target Area");
-						data.add("Preffered Target Distance");
-						try {
-							Log.logData(csvFile, data);
-						} catch (Exception e) {
-							Log.e("Error while logging vision data to csv file!", true);
-							Log.e(e.getMessage(), true);
-							error = true;
-						}
-						data.clear();
-						first = false;
-					}
-					data.add("" + (System.currentTimeMillis() - lastTime));
-					data.add("" + visionData.fps);
-					data.add("" + visionData.targetsFound.size());
-					if (visionData.preferredTarget != null) {
-						data.add((Double) visionData.preferredTarget.data.get("xCentreNorm") + "");
-						data.add((Double) visionData.preferredTarget.data.get("yCentreNorm") + "");
-						data.add((Double) visionData.preferredTarget.data.get("areaNorm") + "");
-						data.add((Double) visionData.preferredTarget.data.get("distance") + "");
-					}
-					try {
-						Log.logData(csvFile, data);
-					} catch (Exception e) {
-						Log.e("Error while logging vision data to csv file!", true);
-						Log.e(e.getMessage(), true);
-						error = true;
-					}
-				}
 
 				// Display the frame rate onto the console
 				double pipelineTime = (((double) (pipelineEnd - pipelineStart))
 						/ Constants.NANOSECONDS_PER_SECOND) * 1000;
 				Log.i("Vision FPS: " + visionData.fps + ", pipeline took: " + pipelineTime + " ms\n", false);
-
-				lastTime = System.currentTimeMillis();
 			} catch (Exception e) {
 				Log.e(e.getMessage(), true);
 				e.printStackTrace();
