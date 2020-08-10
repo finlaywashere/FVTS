@@ -140,6 +140,7 @@ public class Main {
 			}
 		}
 		runID = Utils.findFirstAvailable(masterConfig.get("logFile"));
+		Log.i("Started initialization of FVTS with run id "+runID, true);
 		CLI.logFile = new File(masterConfig.get("logFile").replaceAll("\\$1", "" + runID));
 
 		String allowOverride = masterConfig.get("allowOverride");

@@ -43,13 +43,16 @@ public class Utils {
 	 * @throws IOException If the image failed to write
 	 */
 
-	public static void imgDump(BufferedImage image, String suffix, int timestamp, String outputPath)
+	public static void imgDump(BufferedImage image, String suffix, int timestamp, File outputPath)
 			throws IOException {
 		// prepend the file name with the tamestamp integer, left-padded with
 		// zeros so it sorts properly
 		String match = Main.loggingTable.getString("match","practice");
+		
+		if(!outputPath.exists())
+			outputPath.mkdirs();
 
-		File output = new File(outputPath + match + "-" + String.format("%05d", timestamp) + "_" + suffix + ".png");
+		File output = new File(outputPath,match + "-" + String.format("%05d", timestamp) + "_" + suffix + ".png");
 		ImageIO.write(image, "png", output);
 	}
 

@@ -1,6 +1,7 @@
 package ca.team2706.fvts.main;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -111,7 +112,9 @@ public class DataViewer {
 				Log.i(params.getByName("name").getValue() + " enabled: " + enabled, true);
 
 				MainThread thread = new MainThread(params);
-				thread.setOutputInterface(overrideInterface);
+				List<AbstractInterface> interfaces = new ArrayList<AbstractInterface>();
+				interfaces.add(overrideInterface);
+				thread.setOutputInterface(interfaces);
 				if (enabled) {
 					thread.start();
 				}
