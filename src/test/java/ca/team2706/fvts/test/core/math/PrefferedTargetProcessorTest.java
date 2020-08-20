@@ -11,7 +11,7 @@ import ca.team2706.fvts.core.LibraryLoader;
 import ca.team2706.fvts.core.MainThread;
 import ca.team2706.fvts.core.data.Target;
 import ca.team2706.fvts.core.data.VisionData;
-import ca.team2706.fvts.core.math.PrefferedTargetProcessor;
+import ca.team2706.fvts.core.math.PreferredTargetProcessor;
 import ca.team2706.fvts.core.params.Attribute;
 import ca.team2706.fvts.core.params.AttributeOptions;
 import ca.team2706.fvts.core.params.VisionParams;
@@ -23,7 +23,7 @@ public class PrefferedTargetProcessorTest {
 		// Must be included!
 		// Loads OpenCV
 		LibraryLoader.loadLibraries();
-		PrefferedTargetProcessor processor = new PrefferedTargetProcessor();
+		PreferredTargetProcessor processor = new PreferredTargetProcessor();
 		VisionData data = new VisionData();
 		List<Attribute> attribs = new ArrayList<Attribute>();
 		attribs.add(new Attribute("prefferedtarget/distToCentreImportance","1"));

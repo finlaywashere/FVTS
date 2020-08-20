@@ -35,7 +35,7 @@ public class ShapeDetectPipeline extends AbstractPipeline {
 		ret.params = visionParams;
 		
 		Mat gray = new Mat();
-		Imgproc.cvtColor(src, gray, Imgproc.COLOR_BayerGR2GRAY);
+		Imgproc.cvtColor(src, gray, Imgproc.COLOR_BGR2GRAY);
 		
 		ret.binMask = gray;
 		
@@ -67,8 +67,7 @@ public class ShapeDetectPipeline extends AbstractPipeline {
 				Imgproc.approxPolyDP(contour,result, 0.04*arcLen,true);
 				Point[] points = result.toArray();
 				int len = points.length;
-				MatOfPoint c2 = new MatOfPoint();
-				contour.convertTo(c2, CvType.CV_32F);
+				MatOfPoint c2 = new MatOfPoint(contour.toArray());
 				target.data.put("contour", c2);
 				target.data.put("edges", len);
 				ret.targetsFound.add(target);
@@ -119,6 +118,8 @@ public class ShapeDetectPipeline extends AbstractPipeline {
 	@Override
 	public List<AttributeOptions> getOptions() {
 		List<AttributeOptions> options = new ArrayList<AttributeOptions>();
+		
+		options.add(new AttributeOptions(getName()+"/minArea",true));
 		
 		return options;
 	}

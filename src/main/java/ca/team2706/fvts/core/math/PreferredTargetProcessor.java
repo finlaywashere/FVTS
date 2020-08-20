@@ -9,10 +9,10 @@ import ca.team2706.fvts.core.data.VisionData;
 import ca.team2706.fvts.core.params.AttributeOptions;
 import ca.team2706.fvts.core.params.VisionParams;
 
-public class PrefferedTargetProcessor extends AbstractMathProcessor {
+public class PreferredTargetProcessor extends AbstractMathProcessor {
 
-	public PrefferedTargetProcessor() {
-		super("prefferedtarget");
+	public PreferredTargetProcessor() {
+		super("preferredtarget");
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package ca.team2706.fvts.core;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,7 +94,6 @@ public class MainThread extends Thread {
 	public Mat frame;
 	public boolean useCamera;
 	public static int timestamp = 0;
-	public double lastDist = 0;
 	private List<AbstractInterface> outputInterface;
 	private AbstractPipeline pipeline;
 	private List<AbstractMathProcessor> maths;
@@ -206,9 +203,6 @@ public class MainThread extends Thread {
 					// Sets the raw image to the frame
 					rawOutputImg = frame.clone();
 				}
-
-				if (visionData.preferredTarget != null)
-					lastDist = (Double) visionData.preferredTarget.data.get("distance");
 				for(AbstractInterface inf : outputInterface) {
 					inf.publishData(visionData, this);
 				}
@@ -219,13 +213,6 @@ public class MainThread extends Thread {
 						// May throw a NullPointerException if initializing
 						// the window failed
 						BufferedImage raw = Utils.matToBufferedImage(rawOutputImg);
-						if (visionData.preferredTarget != null) {
-							double dist = (Double) visionData.preferredTarget.data.get("distance");
-							Graphics g = raw.createGraphics();
-							g.setColor(Color.GREEN);
-							g.drawString("dist: " + dist, 50, 50);
-							g.dispose();
-						}
 						guiRawImg.updateImage(raw);
 						guiProcessedImg.updateImage(Utils.matToBufferedImage(visionData.binMask.clone()));
 					} catch (IOException e) {
@@ -236,6 +223,7 @@ public class MainThread extends Thread {
 						continue;
 					} catch (NullPointerException e) {
 						Log.e(e.getMessage(), true);
+						e.printStackTrace();
 						Log.i("Window closed", true);
 						error = true;
 						Runtime.getRuntime().halt(0);

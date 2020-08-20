@@ -27,7 +27,7 @@ public abstract class AbstractMathProcessor {
 			maths.add(new AngleOffsetProcessor());
 			maths.add(new DistanceProcessor());
 			maths.add(new GroupProcessor());
-			maths.add(new PrefferedTargetProcessor());
+			maths.add(new PreferredTargetProcessor());
 		}
 		for(AbstractMathProcessor p : maths) {
 			if(p.getName().equalsIgnoreCase(name))
