@@ -11,6 +11,7 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import ca.team2706.fvts.core.Constants;
 import ca.team2706.fvts.core.MainThread;
 import ca.team2706.fvts.core.data.Target;
 import ca.team2706.fvts.core.data.VisionData;
@@ -22,9 +23,6 @@ public class BlobDetectPipeline extends AbstractPipeline {
 	public BlobDetectPipeline() {
 		super("blobdetect");
 	}
-
-	/** Numerical Constants **/
-	public static final int NANOSECONDS_PER_SECOND = 1000000000;
 
 	/** The fps timer **/
 	public static long fpsTimer = System.nanoTime();
@@ -104,7 +102,7 @@ public class BlobDetectPipeline extends AbstractPipeline {
 		}
 
 		long now = System.nanoTime();
-		visionData.fps = ((double) NANOSECONDS_PER_SECOND) / (now - fpsTimer);
+		visionData.fps = ((double) Constants.NANOSECONDS_PER_SECOND) / (now - fpsTimer);
 		visionData.fps = ((int) (visionData.fps * 10)) / 10.0; // round to 1 decimal place
 		fpsTimer = now;
 
