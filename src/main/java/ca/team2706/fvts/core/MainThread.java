@@ -223,7 +223,6 @@ public class MainThread extends Thread {
 						continue;
 					} catch (NullPointerException e) {
 						Log.e(e.getMessage(), true);
-						e.printStackTrace();
 						Log.i("Window closed", true);
 						error = true;
 						Runtime.getRuntime().halt(0);
