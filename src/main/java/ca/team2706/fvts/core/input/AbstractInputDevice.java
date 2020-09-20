@@ -27,13 +27,19 @@ public abstract class AbstractInputDevice {
 	public abstract void init(String identifier) throws Exception;
 	public abstract Mat getFrame(String identifier);
 	
+	static {
+		init();
+	}
+	public static void init() {
+		inputs = new ArrayList<AbstractInputDevice>();
+		inputs.add(new USBCameraInputDevice());
+		inputs.add(new ImageDummyInputDevice());
+		inputs.add(new DummyInputDevice());
+	}
 	public static List<AbstractInputDevice> inputs = null;
 	public static AbstractInputDevice getByName(String name) {
 		if(inputs == null) {
-			inputs = new ArrayList<AbstractInputDevice>();
-			inputs.add(new USBCameraInputDevice());
-			inputs.add(new ImageDummyInputDevice());
-			inputs.add(new DummyInputDevice());
+			init();
 		}
 		for(AbstractInputDevice input : inputs) {
 			if(input.getName().equalsIgnoreCase(name))

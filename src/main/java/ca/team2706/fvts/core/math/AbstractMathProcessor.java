@@ -19,15 +19,21 @@ public abstract class AbstractMathProcessor {
 	public AbstractMathProcessor(String name) {
 		this.name = name;
 	}
+	static {
+		init();
+	}
+	public static void init() {
+		maths = new ArrayList<AbstractMathProcessor>();
+		maths.add(new AngleOffsetProcessor());
+		maths.add(new DistanceProcessor());
+		maths.add(new GroupProcessor());
+		maths.add(new PreferredTargetProcessor());
+	}
 	public static List<AbstractMathProcessor> maths = null;
 	public static AbstractMathProcessor getByName(String name) {
 		if(maths == null) {
 			// Init
-			maths = new ArrayList<AbstractMathProcessor>();
-			maths.add(new AngleOffsetProcessor());
-			maths.add(new DistanceProcessor());
-			maths.add(new GroupProcessor());
-			maths.add(new PreferredTargetProcessor());
+			init();
 		}
 		for(AbstractMathProcessor p : maths) {
 			if(p.getName().equalsIgnoreCase(name))

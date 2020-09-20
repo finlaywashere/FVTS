@@ -23,14 +23,20 @@ public abstract class AbstractPipeline {
 	public String getName() {
 		return name;
 	}
+	static {
+		init();
+	}
+	public static void init() {
+		pipelines = new ArrayList<AbstractPipeline>();
+		pipelines.add(new BlobDetectPipeline());
+		pipelines.add(new DummyPipeline());
+		pipelines.add(new ShapeDetectPipeline());
+	}
 	public static List<AbstractPipeline> pipelines = null;
 	public static AbstractPipeline getByName(String name) {
 		if(pipelines == null) {
 			// Init
-			pipelines = new ArrayList<AbstractPipeline>();
-			pipelines.add(new BlobDetectPipeline());
-			pipelines.add(new DummyPipeline());
-			pipelines.add(new ShapeDetectPipeline());
+			init();
 		}
 		for(AbstractPipeline p : pipelines) {
 			if(p.getName().equalsIgnoreCase(name))
