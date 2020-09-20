@@ -21,12 +21,18 @@ public abstract class AbstractImagePreprocessor {
 	public AbstractImagePreprocessor(String name) {
 		this.name = name;
 	}
+	static {
+		init();
+	}
+	public static void init() {
+		imageProcessors = new ArrayList<AbstractImagePreprocessor>();
+		imageProcessors.add(new ImageCropPreprocessor());
+		imageProcessors.add(new ImageResizingPreprocessor());
+	}
 	public static List<AbstractImagePreprocessor> imageProcessors = null;
 	public static AbstractImagePreprocessor getByName(String name) {
 		if(imageProcessors == null) {
-			imageProcessors = new ArrayList<AbstractImagePreprocessor>();
-			imageProcessors.add(new ImageCropPreprocessor());
-			imageProcessors.add(new ImageResizingPreprocessor());
+			init();
 		}
 		
 		for(AbstractImagePreprocessor p : imageProcessors) {

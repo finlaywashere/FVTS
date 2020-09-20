@@ -21,16 +21,25 @@ public abstract class AbstractInterface {
 	public AbstractInterface(String name) {
 		this.name = name;
 	}
+	
+	static {
+		init();
+	}
+	public static void init() {
+		interfaces = new ArrayList<AbstractInterface>();
+		interfaces.add(new NetworkTablesInterface());
+		interfaces.add(new DummyInterface());
+		interfaces.add(new ImageDumpInterface());
+		interfaces.add(new CSVLogInterface());
+		interfaces.add(new NetworkPullInterface());
+		interfaces.add(new NetworkPushInterface());
+	}
 
 	public static List<AbstractInterface> interfaces = null;
 	public static AbstractInterface getByName(String name) {
 		if(interfaces == null) {
 			// Init
-			interfaces = new ArrayList<AbstractInterface>();
-			interfaces.add(new NetworkTablesInterface());
-			interfaces.add(new DummyInterface());
-			interfaces.add(new ImageDumpInterface());
-			interfaces.add(new CSVLogInterface());
+			init();
 		}
 		for(AbstractInterface i : interfaces) {
 			if(i.getName().equalsIgnoreCase(name))
