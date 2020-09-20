@@ -25,7 +25,10 @@ public class NetworkTablesManager extends Thread{
 			
 			String name = params.getByName("name").getValue();
 			
-			tables.get(name).putBoolean("enabled", params.getByName("enabled").getValueB());
+			NetworkTable t = tables.get(name);
+			
+			if(t != null)
+				t.putBoolean("enabled", params.getByName("enabled").getValueB());
 			
 		}
 		
@@ -33,6 +36,8 @@ public class NetworkTablesManager extends Thread{
 			
 			for(VisionParams params : Main.visionParamsList) {
 				NetworkTable table = tables.get(params.getByName("name").getValue());
+				if(table == null)
+					continue;
 				
 				boolean enabled = table.getBoolean("enabled", true);
 				

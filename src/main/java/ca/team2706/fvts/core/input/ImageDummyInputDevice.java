@@ -5,8 +5,11 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
 import org.opencv.core.Mat;
-import org.opencv.videoio.VideoCapture;
+
+import ca.team2706.fvts.core.Utils;
 
 public class ImageDummyInputDevice extends AbstractInputDevice{
 
@@ -21,11 +24,7 @@ public class ImageDummyInputDevice extends AbstractInputDevice{
 			if(!new File(identifier).exists()) {
 				throw new FileNotFoundException("Failed to find image file "+identifier);
 			}
-			VideoCapture capture = new VideoCapture(identifier);
-			Mat frame = new Mat();
-			if(!capture.read(frame)) {
-				throw new Exception("Failed to open image file "+identifier);
-			}
+			Mat frame = Utils.bufferedImageToMat(ImageIO.read(new File(identifier)));
 			frames.put(identifier, frame);
 		}
 	}

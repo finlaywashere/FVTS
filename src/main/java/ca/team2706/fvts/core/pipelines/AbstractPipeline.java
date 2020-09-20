@@ -30,6 +30,7 @@ public abstract class AbstractPipeline {
 		pipelines = new ArrayList<AbstractPipeline>();
 		pipelines.add(new BlobDetectPipeline());
 		pipelines.add(new DummyPipeline());
+		pipelines.add(new ShapeDetectPipeline());
 	}
 	public static List<AbstractPipeline> pipelines = null;
 	public static AbstractPipeline getByName(String name) {
