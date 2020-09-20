@@ -31,8 +31,6 @@ public abstract class AbstractInterface {
 		interfaces.add(new DummyInterface());
 		interfaces.add(new ImageDumpInterface());
 		interfaces.add(new CSVLogInterface());
-		interfaces.add(new NetworkPullInterface());
-		interfaces.add(new NetworkPushInterface());
 	}
 
 	public static List<AbstractInterface> interfaces = null;
